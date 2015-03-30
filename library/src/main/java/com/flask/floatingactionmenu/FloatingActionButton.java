@@ -2,6 +2,8 @@ package com.flask.floatingactionmenu;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.ShapeDrawable;
@@ -10,6 +12,7 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
@@ -23,6 +26,8 @@ public class FloatingActionButton extends ImageButton {
 	protected int colorPressed;
 	protected int colorDisabled;
 	protected int colorNormal;
+	protected int normalIcon;
+	protected Drawable normalIconDrawable;
 
 	public FloatingActionButton(Context context) {
 		super(context);
@@ -55,6 +60,7 @@ public class FloatingActionButton extends ImageButton {
 				colorNormal = attr.getColor(R.styleable.FloatingActionButton_fab_colorNormal, getColor(R.color.material_blue_500));
 				colorPressed = attr.getColor(R.styleable.FloatingActionButton_fab_colorPressed, getColor(R.color.material_blue_600));
 				colorDisabled = attr.getColor(R.styleable.FloatingActionButton_fab_colorDisabled, colorDisabled);
+				normalIcon = attr.getResourceId(R.styleable.FloatingActionButton_fab_normal_icon, 0);
 				type = attr.getInt(R.styleable.FloatingActionButton_fab_type, TYPE_NORMAL);
 			} finally {
 				attr.recycle();
@@ -62,8 +68,31 @@ public class FloatingActionButton extends ImageButton {
 		}
 	}
 
+	protected Drawable getIconDrawable() {
+		if (normalIconDrawable != null) {
+			return normalIconDrawable;
+		} else if (normalIcon != 0) {
+			normalIconDrawable = getResources().getDrawable(normalIcon);
+			return normalIconDrawable;
+		} else {
+			return new ColorDrawable(Color.TRANSPARENT);
+		}
+	}
+
 	protected void updateBackground() {
-		setBackground(createFillDrawable());
+		LayerDrawable layerDrawable = new LayerDrawable(
+				new Drawable[]{
+						createFillDrawable(),
+						getIconDrawable()
+				});
+
+		int circleSize = getDimension(type == TYPE_NORMAL ? R.dimen.fab_size_normal : R.dimen.fab_size_mini);
+		int inset = (circleSize - getDimension(type == TYPE_NORMAL ? R.dimen.fab_icon_size : R.dimen.fab_icon_size_mini)) / 2;
+
+		layerDrawable.setLayerInset(1,
+				shadowSize + inset, shadowSize + inset,
+				shadowSize + inset, shadowSize + inset);
+		setBackground(layerDrawable);
 	}
 
 	protected StateListDrawable createFillDrawable() {

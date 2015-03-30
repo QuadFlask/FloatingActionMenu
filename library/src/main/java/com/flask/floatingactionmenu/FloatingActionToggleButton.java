@@ -8,16 +8,18 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
+import android.widget.Toast;
 
 public class FloatingActionToggleButton extends FloatingActionButton {
 	private static final int ANIMATION_DURATION = 300;
 	private static final float COLLAPSED_PLUS_ROTATION = 0f;
 	private static final float EXPANDED_PLUS_ROTATION = 90f + 45f;
 
-	private AnimatorSet toggleOnAnimation = new AnimatorSet().setDuration(ANIMATION_DURATION);
-	private AnimatorSet toggleOffAnimation = new AnimatorSet().setDuration(ANIMATION_DURATION);
+	private AnimatorSet toggleOnAnimator = new AnimatorSet().setDuration(ANIMATION_DURATION);
+	private AnimatorSet toggleOffAnimator = new AnimatorSet().setDuration(ANIMATION_DURATION);
 
 	protected Drawable toggleDrawable;
 
@@ -37,12 +39,13 @@ public class FloatingActionToggleButton extends FloatingActionButton {
 		super(context, attrs, defStyleAttr);
 	}
 
-	protected void init(Context context, AttributeSet attrs) {
-		shadowSize = getDimension(R.dimen.fab_shadow_size);
+	protected void init(final Context context, AttributeSet attrs) {
 		colorNormal = getColor(R.color.material_blue_500);
 		colorPressed = getColor(R.color.material_blue_600);
 		colorDisabled = getColor(android.R.color.darker_gray);
-		toggleDrawable = getResources().getDrawable(R.drawable.ic_mode_edit_white_24dp);
+
+		toggleOnAnimator = new AnimatorSet().setDuration(ANIMATION_DURATION);
+		toggleOffAnimator = new AnimatorSet().setDuration(ANIMATION_DURATION);
 
 		if (attrs != null) initAttributes(context, attrs);
 		updateBackground();
@@ -51,6 +54,7 @@ public class FloatingActionToggleButton extends FloatingActionButton {
 			@Override
 			public void onClick(View v) {
 				toggle();
+				Toast.makeText(context, "toggle", Toast.LENGTH_SHORT).show();
 			}
 		});
 	}
@@ -63,8 +67,6 @@ public class FloatingActionToggleButton extends FloatingActionButton {
 				colorPressed = attr.getColor(R.styleable.FloatingActionButton_fab_colorPressed, getColor(R.color.material_blue_600));
 				colorDisabled = attr.getColor(R.styleable.FloatingActionButton_fab_colorDisabled, colorDisabled);
 				toggleDrawable = attr.getDrawable(R.styleable.FloatingActionButton_fab_toggle_icon);
-				if (toggleDrawable == null)
-					toggleDrawable = getResources().getDrawable(R.drawable.ic_mode_edit_white_24dp);
 				type = attr.getInt(R.styleable.FloatingActionButton_fab_type, TYPE_NORMAL);
 			} finally {
 				attr.recycle();
@@ -75,9 +77,9 @@ public class FloatingActionToggleButton extends FloatingActionButton {
 	public void toggle() {
 		isOn = !isOn;
 		if (isOn) {
-			toggleOnAnimation.start();
+			toggleOnAnimator.start();
 		} else {
-			toggleOffAnimation.start();
+			toggleOffAnimator.start();
 		}
 	}
 
@@ -85,7 +87,6 @@ public class FloatingActionToggleButton extends FloatingActionButton {
 	protected void updateBackground() {
 		LayerDrawable layerDrawable = new LayerDrawable(
 				new Drawable[]{
-						getResources().getDrawable(type == TYPE_NORMAL ? R.drawable.shadow : R.drawable.shadow_mini),
 						createFillDrawable(),
 						getIconDrawable()
 				});
@@ -95,15 +96,15 @@ public class FloatingActionToggleButton extends FloatingActionButton {
 
 	protected Drawable getIconDrawable() {
 		fadingDrawable = new FadingDrawable(new Drawable[]{
-				getDrawable(),
+				super.getIconDrawable(),
 				toggleDrawable
 		});
 		rotatingDrawable = new RotatingDrawable(fadingDrawable);
 
 		final OvershootInterpolator interpolator = new OvershootInterpolator();
 
-		final ObjectAnimator toggleOnRotation = ObjectAnimator.ofFloat(rotatingDrawable, "rotation", EXPANDED_PLUS_ROTATION, COLLAPSED_PLUS_ROTATION);
-		final ObjectAnimator toggleOffRotation = ObjectAnimator.ofFloat(rotatingDrawable, "rotation", COLLAPSED_PLUS_ROTATION, EXPANDED_PLUS_ROTATION);
+		final ObjectAnimator toggleOnRotation = ObjectAnimator.ofFloat(rotatingDrawable, "rotation", COLLAPSED_PLUS_ROTATION, EXPANDED_PLUS_ROTATION);
+		final ObjectAnimator toggleOffRotation = ObjectAnimator.ofFloat(rotatingDrawable, "rotation", EXPANDED_PLUS_ROTATION, COLLAPSED_PLUS_ROTATION);
 		final ObjectAnimator toggleOnFading = ObjectAnimator.ofFloat(fadingDrawable, "fading", 0, 1f);
 		final ObjectAnimator toggleOffFading = ObjectAnimator.ofFloat(fadingDrawable, "fading", 1f, 0);
 
@@ -112,21 +113,28 @@ public class FloatingActionToggleButton extends FloatingActionButton {
 		toggleOnFading.setInterpolator(interpolator);
 		toggleOffFading.setInterpolator(interpolator);
 
-		toggleOnAnimation.play(toggleOnRotation);
-		toggleOnAnimation.play(toggleOnFading);
-		toggleOffAnimation.play(toggleOffRotation);
-		toggleOffAnimation.play(toggleOffFading);
+		toggleOnAnimator.play(toggleOnRotation);
+		toggleOnAnimator.play(toggleOnFading);
+		toggleOffAnimator.play(toggleOffRotation);
+		toggleOffAnimator.play(toggleOffFading);
+
+		int circleSize = getDimension(type == TYPE_NORMAL ? R.dimen.fab_size_normal : R.dimen.fab_size_mini);
+		int inset = (circleSize - getDimension(type == TYPE_NORMAL ? R.dimen.fab_icon_size : R.dimen.fab_icon_size_mini)) / 2;
+
+		rotatingDrawable.setLayerInset(0,
+				shadowSize + inset, shadowSize + inset,
+				shadowSize + inset, shadowSize + inset);
 
 		return rotatingDrawable;
 	}
 
-	private static class FadingDrawable extends LayerDrawable {
+	static class FadingDrawable extends LayerDrawable {
 		private float fading;
 
 		public FadingDrawable(Drawable[] layers) {
 			super(layers);
 			assert (layers.length == 2);
-			fading = 0;
+			setFading(0.5f);
 		}
 
 		public float getFading() {
@@ -145,28 +153,28 @@ public class FloatingActionToggleButton extends FloatingActionButton {
 		}
 	}
 
-	private static class RotatingDrawable extends LayerDrawable {
+	static class RotatingDrawable extends LayerDrawable {
 		public RotatingDrawable(Drawable drawable) {
 			super(new Drawable[]{drawable});
 		}
 
-		private float mRotation;
+		private float rotation;
 
 		@SuppressWarnings("UnusedDeclaration")
 		public float getRotation() {
-			return mRotation;
+			return rotation;
 		}
 
 		@SuppressWarnings("UnusedDeclaration")
 		public void setRotation(float rotation) {
-			mRotation = rotation;
+			this.rotation = rotation;
 			invalidateSelf();
 		}
 
 		@Override
 		public void draw(Canvas canvas) {
 			canvas.save();
-			canvas.rotate(mRotation, getBounds().centerX(), getBounds().centerY());
+			canvas.rotate(rotation, getBounds().centerX(), getBounds().centerY());
 			super.draw(canvas);
 			canvas.restore();
 		}

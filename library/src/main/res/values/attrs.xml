@@ -11,6 +11,7 @@
             <enum name="normal" value="0" />
             <enum name="mini" value="1" />
         </attr>
-        <attr name="fab_toggle_icon" format="integer" />
+        <attr name="fab_normal_icon" format="reference" />
+        <attr name="fab_toggle_icon" format="reference" />
     </declare-styleable>
 </resources>

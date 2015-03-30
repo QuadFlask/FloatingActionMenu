@@ -7,4 +7,6 @@
 
     <dimen name="fab_scroll_threshold">4dp</dimen>
     <dimen name="fab_elevation_lollipop">8dp</dimen>
+    <dimen name="fab_icon_size">24dp</dimen>
+    <dimen name="fab_icon_size_mini">18dp</dimen>
 </resources>
