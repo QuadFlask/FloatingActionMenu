@@ -63,11 +63,15 @@ public class FloatingActionButton extends ImageButton {
 	}
 
 	protected void updateBackground() {
+		setBackground(createFillDrawable());
+	}
+
+	protected StateListDrawable createFillDrawable() {
 		StateListDrawable drawable = new StateListDrawable();
 		drawable.addState(new int[]{android.R.attr.state_pressed}, createDrawable(colorPressed));
 		drawable.addState(new int[]{-android.R.attr.state_enabled}, createDrawable(colorDisabled));
 		drawable.addState(new int[]{}, createDrawable(colorNormal));
-		setBackground(drawable);
+		return drawable;
 	}
 
 	protected Drawable createDrawable(int color) {
