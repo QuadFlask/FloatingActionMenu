@@ -12,7 +12,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
-import android.widget.Toast;
 
 public class FloatingActionToggleButton extends FloatingActionButton {
 	private static final Interpolator interpolator = new AccelerateDecelerateInterpolator();
@@ -50,14 +49,7 @@ public class FloatingActionToggleButton extends FloatingActionButton {
 
 		if (attrs != null) initAttributes(context, attrs);
 		updateBackground();
-
-		setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				toggle();
-				Toast.makeText(context, "toggle", Toast.LENGTH_SHORT).show();
-			}
-		});
+		applyDefaultToggleBehavior();
 	}
 
 	@Override
@@ -157,6 +149,19 @@ public class FloatingActionToggleButton extends FloatingActionButton {
 			toggleOnAnimator.cancel();
 			toggleOffAnimator.start();
 		}
+	}
+
+	public void applyDefaultToggleBehavior() {
+		setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				toggle();
+			}
+		});
+	}
+
+	public void cancelDefaultToggleBehavior() {
+		setOnClickListener(null);
 	}
 
 	public boolean isToggleOn() {
