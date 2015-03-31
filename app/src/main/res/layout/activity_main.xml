@@ -6,17 +6,6 @@
                 tools:context=".MainActivity"
                 android:background="#ff242628">
 
-	<ImageButton
-		android:layout_width="18dp" android:layout_height="18dp"
-		android:background="#0000"
-		android:src="@drawable/ic_add_white_18dp"/>
-
-	<ImageButton
-		android:layout_width="48dp" android:layout_height="38dp"
-		android:background="#0000"
-		android:layout_marginTop="48dp"
-		android:src="@drawable/ic_add_white_18dp"/>
-
 	<com.flask.floatingactionmenu.FloatingActionButton
 		android:id="@+id/fab"
 		android:layout_width="wrap_content"
@@ -58,5 +47,41 @@
 		fab:fab_normal_icon="@drawable/ic_add_white_24dp"
 		fab:fab_toggle_icon="@drawable/ic_mode_edit_white_24dp"
 		/>
+
+	<com.flask.floatingactionmenu.FloatingActionMenu
+		android:id="@+id/fbm"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentRight="true"
+		android:layout_margin="16dp">
+
+		<com.flask.floatingactionmenu.FloatingActionButton
+			android:id="@+id/faba"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_margin="8dp"
+			fab:fab_normal_icon="@drawable/ic_mode_edit_white_18dp"
+			fab:fab_type="mini"
+			/>
+
+		<com.flask.floatingactionmenu.FloatingActionButton
+			android:id="@+id/fabb"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_margin="8dp"
+			fab:fab_normal_icon="@drawable/ic_add_white_18dp"
+			fab:fab_type="mini"
+			/>
+
+		<com.flask.floatingactionmenu.FloatingActionToggleButton
+			android:id="@+id/fab_toggle"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			fab:fab_normal_icon="@drawable/ic_add_white_24dp"
+			fab:fab_toggle_icon="@drawable/ic_mode_edit_white_24dp"
+			android:layout_marginTop="8dp"
+			/>
+	</com.flask.floatingactionmenu.FloatingActionMenu>
 
 </RelativeLayout>

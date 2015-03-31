@@ -13,5 +13,7 @@
         </attr>
         <attr name="fab_normal_icon" format="reference" />
         <attr name="fab_toggle_icon" format="reference" />
+        <attr name="fab_labelStyle" format="reference" />
+        <attr name="fab_labelText" format="string" />
     </declare-styleable>
 </resources>
