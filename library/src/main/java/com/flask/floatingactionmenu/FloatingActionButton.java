@@ -11,8 +11,8 @@ import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
+import android.support.annotation.DrawableRes;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
@@ -69,11 +69,14 @@ public class FloatingActionButton extends ImageButton {
 	}
 
 	protected Drawable getIconDrawable() {
-		if (normalIconDrawable != null) {
-			return normalIconDrawable;
-		} else if (normalIcon != 0) {
-			normalIconDrawable = getResources().getDrawable(normalIcon);
-			return normalIconDrawable;
+		if (normalIconDrawable == null)
+			normalIconDrawable = getCopyOfDrawableFromResources(normalIcon);
+		return normalIconDrawable;
+	}
+
+	protected Drawable getCopyOfDrawableFromResources(@DrawableRes int rid) {
+		if (rid != 0) {
+			return getResources().getDrawable(rid).mutate().getConstantState().newDrawable();
 		} else {
 			return new ColorDrawable(Color.TRANSPARENT);
 		}
