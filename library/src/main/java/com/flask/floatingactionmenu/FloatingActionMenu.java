@@ -1,12 +1,14 @@
 package com.flask.floatingactionmenu;
 
 import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.DimenRes;
 import android.util.AttributeSet;
+import android.util.Property;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewGroup;
@@ -170,81 +172,23 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 
 			for (FloatingActionButton fab : fabList) {
 				delay -= inc;
-				final ObjectAnimator ExpandAlphaAnimator = new ObjectAnimator().ofFloat(fab, View.ALPHA, 0, 1f);
-				ExpandAlphaAnimator.setInterpolator(interpolator);
-				ExpandAlphaAnimator.setStartDelay(delay);
-				toggleOnAnimator.play(ExpandAlphaAnimator);
+				final ObjectAnimator expandAlphaAnimator = createObjectAnimator(fab, View.ALPHA, delay, 0, 1f);
+				toggleOnAnimator.play(expandAlphaAnimator)
+						.with(createObjectAnimator(fab, View.TRANSLATION_Y, delay, fab.getMeasuredHeight() / 4, 0))
+						.with(createObjectAnimator(fab, View.SCALE_X, delay, 0, 1f))
+						.with(createObjectAnimator(fab, View.SCALE_Y, delay, 0, 1f));
 
-				ObjectAnimator expandYTransAnimator = new ObjectAnimator().ofFloat(fab, View.TRANSLATION_Y, fab.getMeasuredHeight() / 4, 0);
-				expandYTransAnimator.setInterpolator(interpolator);
-				expandYTransAnimator.setStartDelay(delay);
-				toggleOnAnimator.play(expandYTransAnimator);
-
-				ObjectAnimator expandXScaleAnimator = new ObjectAnimator().ofFloat(fab, View.SCALE_X, 0, 1f);
-				expandXScaleAnimator.setInterpolator(interpolator);
-				expandXScaleAnimator.setStartDelay(delay);
-				toggleOnAnimator.play(expandXScaleAnimator);
-
-				ObjectAnimator expandYScaleAnimator = new ObjectAnimator().ofFloat(fab, View.SCALE_Y, 0, 1f);
-				expandYScaleAnimator.setInterpolator(interpolator);
-				expandYScaleAnimator.setStartDelay(delay);
-				toggleOnAnimator.play(expandYScaleAnimator);
-
-				ExpandAlphaAnimator.addListener(new Animator.AnimatorListener() {
-					@Override
-					public void onAnimationStart(Animator animation) {
-						((View) ExpandAlphaAnimator.getTarget()).setVisibility(VISIBLE);
-						((View) ExpandAlphaAnimator.getTarget()).setClickable(true);
-					}
-
-					@Override
-					public void onAnimationEnd(Animator animation) {
-						((View) ExpandAlphaAnimator.getTarget()).setVisibility(VISIBLE);
-					}
-
-					@Override
-					public void onAnimationCancel(Animator animation) {
-					}
-
-					@Override
-					public void onAnimationRepeat(Animator animation) {
-					}
-				});
+				expandAlphaAnimator.addListener(new AutoAlphaShowingAnimatorListener(expandAlphaAnimator));
 			}
 
 			delay = duration;
 			for (TextView label : labelList) {
 				delay -= inc;
-				final ObjectAnimator expandAlphaAnimator = new ObjectAnimator().ofFloat(label, View.ALPHA, 0, 1f);
-				expandAlphaAnimator.setInterpolator(interpolator);
-				expandAlphaAnimator.setStartDelay(delay);
-				toggleOnAnimator.play(expandAlphaAnimator);
+				final ObjectAnimator expandAlphaAnimator = createObjectAnimator(label, View.ALPHA, delay, 0, 1f);
+				toggleOnAnimator.play(expandAlphaAnimator)
+						.with(createObjectAnimator(label, View.TRANSLATION_Y, delay, label.getMeasuredHeight() / 4, 0));
 
-				ObjectAnimator expandYTransAnimator = new ObjectAnimator().ofFloat(label, View.TRANSLATION_Y, label.getMeasuredHeight() / 4, 0);
-				expandYTransAnimator.setInterpolator(interpolator);
-				expandYTransAnimator.setStartDelay(delay);
-				toggleOnAnimator.play(expandYTransAnimator);
-
-				expandAlphaAnimator.addListener(new Animator.AnimatorListener() {
-					@Override
-					public void onAnimationStart(Animator animation) {
-						((View) expandAlphaAnimator.getTarget()).setVisibility(VISIBLE);
-						((View) expandAlphaAnimator.getTarget()).setClickable(true);
-					}
-
-					@Override
-					public void onAnimationEnd(Animator animation) {
-						((View) expandAlphaAnimator.getTarget()).setVisibility(VISIBLE);
-					}
-
-					@Override
-					public void onAnimationCancel(Animator animation) {
-					}
-
-					@Override
-					public void onAnimationRepeat(Animator animation) {
-					}
-				});
+				expandAlphaAnimator.addListener(new AutoAlphaShowingAnimatorListener(expandAlphaAnimator));
 			}
 		}
 	}
@@ -259,81 +203,87 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 			toggleOffAnimator = fabToggle.getToggleOffAnimator();
 
 			for (FloatingActionButton fab : fabList) {
-				final ObjectAnimator collapseAlphaAnimator = new ObjectAnimator().ofFloat(fab, View.ALPHA, 1f, 0);
-				collapseAlphaAnimator.setInterpolator(interpolator);
-				collapseAlphaAnimator.setStartDelay(delay);
-				toggleOffAnimator.play(collapseAlphaAnimator);
+				final ObjectAnimator collapseAlphaAnimator = createObjectAnimator(fab, View.ALPHA, delay, 1f, 0);
+				toggleOffAnimator.play(collapseAlphaAnimator)
+						.with(createObjectAnimator(fab, View.TRANSLATION_Y, delay, 0, fab.getMeasuredHeight() / 4))
+						.with(createObjectAnimator(fab, View.SCALE_X, delay, 1f, 0))
+						.with(createObjectAnimator(fab, View.SCALE_Y, delay, 1f, 0));
 
-				ObjectAnimator collapseYTransAnimator = new ObjectAnimator().ofFloat(fab, View.TRANSLATION_Y, 0, fab.getMeasuredHeight() / 4);
-				collapseYTransAnimator.setInterpolator(interpolator);
-				collapseYTransAnimator.setStartDelay(delay);
-				toggleOffAnimator.play(collapseYTransAnimator);
-
-				ObjectAnimator collapseXScaleAnimator = new ObjectAnimator().ofFloat(fab, View.SCALE_X, 1f, 0);
-				collapseXScaleAnimator.setInterpolator(interpolator);
-				collapseXScaleAnimator.setStartDelay(delay);
-				toggleOffAnimator.play(collapseXScaleAnimator);
-
-				ObjectAnimator collapseYScaleAnimator = new ObjectAnimator().ofFloat(fab, View.SCALE_Y, 1f, 0);
-				collapseYScaleAnimator.setInterpolator(interpolator);
-				collapseYScaleAnimator.setStartDelay(delay);
-				toggleOffAnimator.play(collapseYScaleAnimator);
-
-				collapseAlphaAnimator.addListener(new Animator.AnimatorListener() {
-					@Override
-					public void onAnimationStart(Animator animation) {
-						((View) collapseAlphaAnimator.getTarget()).setVisibility(VISIBLE);
-					}
-
-					@Override
-					public void onAnimationEnd(Animator animation) {
-						((View) collapseAlphaAnimator.getTarget()).setVisibility(INVISIBLE);
-						((View) collapseAlphaAnimator.getTarget()).setClickable(false);
-					}
-
-					@Override
-					public void onAnimationCancel(Animator animation) {
-					}
-
-					@Override
-					public void onAnimationRepeat(Animator animation) {
-					}
-				});
+				collapseAlphaAnimator.addListener(new AutoAlphaHidingAnimatorListener(collapseAlphaAnimator));
 				delay += inc;
 			}
 			delay = 0;
 			for (TextView label : labelList) {
-				final ObjectAnimator collapseAlphaAnimator = new ObjectAnimator().ofFloat(label, View.ALPHA, 1f, 0);
-				collapseAlphaAnimator.setInterpolator(interpolator);
-				collapseAlphaAnimator.setStartDelay(delay);
-				toggleOffAnimator.play(collapseAlphaAnimator);
+				final ObjectAnimator collapseAlphaAnimator = createObjectAnimator(label, View.ALPHA, delay, 1f, 0);
+				toggleOffAnimator.play(collapseAlphaAnimator)
+						.with(createObjectAnimator(label, View.TRANSLATION_Y, delay, 0, label.getMeasuredHeight() / 4));
 
-				ObjectAnimator collapseYTransAnimator = new ObjectAnimator().ofFloat(label, View.TRANSLATION_Y, 0, label.getMeasuredHeight() / 4);
-				collapseYTransAnimator.setInterpolator(interpolator);
-				collapseYTransAnimator.setStartDelay(delay);
-				toggleOffAnimator.play(collapseYTransAnimator);
-				collapseAlphaAnimator.addListener(new Animator.AnimatorListener() {
-					@Override
-					public void onAnimationStart(Animator animation) {
-						((View) collapseAlphaAnimator.getTarget()).setVisibility(VISIBLE);
-					}
-
-					@Override
-					public void onAnimationEnd(Animator animation) {
-						((View) collapseAlphaAnimator.getTarget()).setVisibility(INVISIBLE);
-						((View) collapseAlphaAnimator.getTarget()).setClickable(false);
-					}
-
-					@Override
-					public void onAnimationCancel(Animator animation) {
-					}
-
-					@Override
-					public void onAnimationRepeat(Animator animation) {
-					}
-				});
+				collapseAlphaAnimator.addListener(new AutoAlphaHidingAnimatorListener(collapseAlphaAnimator));
 				delay += inc;
 			}
+		}
+	}
+
+	private ObjectAnimator createObjectAnimator(Object target, Property property, long delay, float... values) {
+		ObjectAnimator objectAnimator = new ObjectAnimator().ofFloat(target, property, values);
+		objectAnimator.setInterpolator(interpolator);
+		objectAnimator.setStartDelay(delay);
+		return objectAnimator;
+	}
+
+	static class AutoAlphaShowingAnimatorListener extends AnimatorListenerAdapter {
+		private ObjectAnimator objectAnimator;
+
+		AutoAlphaShowingAnimatorListener(ObjectAnimator objectAnimator) {
+			this.objectAnimator = objectAnimator;
+		}
+
+		@Override
+		public void onAnimationStart(Animator animation) {
+			((View) objectAnimator.getTarget()).setVisibility(VISIBLE);
+			((View) objectAnimator.getTarget()).setClickable(true);
+		}
+
+		@Override
+		public void onAnimationEnd(Animator animation) {
+			((View) objectAnimator.getTarget()).setVisibility(VISIBLE);
+		}
+	}
+
+	static class AutoAlphaHidingAnimatorListener extends AnimatorListenerAdapter {
+		private ObjectAnimator objectAnimator;
+
+		AutoAlphaHidingAnimatorListener(ObjectAnimator objectAnimator) {
+			this.objectAnimator = objectAnimator;
+		}
+
+		@Override
+		public void onAnimationStart(Animator animation) {
+			((View) objectAnimator.getTarget()).setVisibility(VISIBLE);
+		}
+
+		@Override
+		public void onAnimationEnd(Animator animation) {
+			((View) objectAnimator.getTarget()).setVisibility(INVISIBLE);
+			((View) objectAnimator.getTarget()).setClickable(false);
+		}
+	}
+
+	static abstract class AnimatorListenerAdapter implements AnimatorListener {
+		@Override
+		public void onAnimationStart(Animator animation) {
+		}
+
+		@Override
+		public void onAnimationEnd(Animator animation) {
+		}
+
+		@Override
+		public void onAnimationCancel(Animator animation) {
+		}
+
+		@Override
+		public void onAnimationRepeat(Animator animation) {
 		}
 	}
 

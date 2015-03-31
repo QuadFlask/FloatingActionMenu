@@ -54,14 +54,10 @@ public class FloatingActionToggleButton extends FloatingActionButton {
 
 	@Override
 	protected void initAttributes(Context context, AttributeSet attributeSet) {
+		super.initAttributes(context, attributeSet);
 		TypedArray attr = getTypedArray(context, attributeSet, R.styleable.FloatingActionButton);
 		if (attr != null) {
 			try {
-				colorNormal = attr.getColor(R.styleable.FloatingActionButton_fab_colorNormal, getColor(R.color.material_blue_500));
-				colorPressed = attr.getColor(R.styleable.FloatingActionButton_fab_colorPressed, getColor(R.color.material_blue_600));
-				colorDisabled = attr.getColor(R.styleable.FloatingActionButton_fab_colorDisabled, colorDisabled);
-				normalIcon = attr.getResourceId(R.styleable.FloatingActionButton_fab_normal_icon, 0);
-				type = attr.getInt(R.styleable.FloatingActionButton_fab_type, TYPE_NORMAL);
 				toggleIcon = attr.getResourceId(R.styleable.FloatingActionButton_fab_toggle_icon, 0);
 				labelText = attr.getString(R.styleable.FloatingActionButton_fab_labelText);
 			} finally {
@@ -170,11 +166,11 @@ public class FloatingActionToggleButton extends FloatingActionButton {
 		return isOn;
 	}
 
-	public AnimatorSet getToggleOnAnimator(){
+	public AnimatorSet getToggleOnAnimator() {
 		return toggleOnAnimator;
 	}
 
-	public AnimatorSet getToggleOffAnimator(){
+	public AnimatorSet getToggleOffAnimator() {
 		return toggleOffAnimator;
 	}
 
