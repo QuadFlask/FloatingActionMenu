@@ -48,23 +48,12 @@
 		fab:fab_type="mini"
 		/>
 
-	<com.flask.floatingactionmenu.FloatingActionButton
+	<com.flask.floatingactionmenu.FloatingActionToggleButton
 		android:id="@+id/fab3"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_alignParentTop="true"
-		android:layout_centerHorizontal="true"
-		android:layout_margin="16dp"
-		fab:fab_normal_icon="@drawable/ic_mode_edit_white_18dp"
-		fab:fab_type="mini"
-		/>
-
-	<com.flask.floatingactionmenu.FloatingActionToggleButton
-		android:id="@+id/fab4"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
-		android:layout_alignParentRight="true"
+		android:layout_centerHorizontal="true"
 		android:layout_margin="16dp"
 		fab:fab_normal_icon="@drawable/ic_add_white_24dp"
 		fab:fab_toggle_icon="@drawable/ic_mode_edit_white_24dp"

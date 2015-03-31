@@ -134,7 +134,7 @@ public class FloatingActionToggleButton extends FloatingActionButton {
 
 		if (isOn) toggleOn();
 		else toggleOff();
-		onToggleListener.onToggle(isOn);
+		if (onToggleListener != null) onToggleListener.onToggle(isOn);
 	}
 
 	public void toggleOn() {
