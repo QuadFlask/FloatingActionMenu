@@ -103,7 +103,7 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 			int labelXAwayFromButton = labelXNearButton - label.getMeasuredWidth();
 			int labelLeft = labelXAwayFromButton;
 			int labelRight = labelXNearButton;
-			int labelTop = y - (fab.getMeasuredHeight() - label.getMeasuredHeight()) / 2;
+			int labelTop = y + (fab.getMeasuredHeight() - label.getMeasuredHeight()) / 2;
 			label.layout(labelLeft, labelTop, labelRight, labelTop + label.getMeasuredHeight());
 
 			nextY = y;
@@ -231,7 +231,6 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 				collapseYTransAnimator.setInterpolator(interpolator);
 				collapseYTransAnimator.setStartDelay(delay);
 				toggleOffAnimator.play(collapseYTransAnimator);
-
 
 				ObjectAnimator collapseXScaleAnimator = new ObjectAnimator().ofFloat(fab, View.SCALE_X, 1f, 0);
 				collapseXScaleAnimator.setInterpolator(interpolator);
