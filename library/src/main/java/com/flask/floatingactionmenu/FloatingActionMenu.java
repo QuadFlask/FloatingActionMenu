@@ -25,6 +25,8 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 	private AnimatorSet toggleOnAnimator, toggleOffAnimator;
 	private int labelsStyle;
 
+	private int maxButtonWidth;
+
 	public FloatingActionMenu(Context context) {
 		super(context);
 	}
@@ -54,8 +56,6 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 		}
 	}
 
-	private int maxButtonWidth, labelsVerticalOffset;
-
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		measureChildren(widthMeasureSpec, heightMeasureSpec);
@@ -65,21 +65,17 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 		int labelMargin = getDimension(R.dimen.fab_label_margin);
 		int maxLabelWidth = 0;
 
-		Log.e("FloatingActionMenu.onMeasure", "fab: " + width + ", " + height);
-
 		for (int i = 0; i < fabList.size(); i++) {
 			FloatingActionButton fab = fabList.get(i);
 
 			width = Math.max(fab.getMeasuredWidth(), width);
 			height += fab.getMeasuredHeight() + margin * 2;
 			maxLabelWidth = Math.max(maxLabelWidth, labelList.get(i).getMeasuredWidth());
-			Log.e("FloatingActionMenu.onMeasure", "fab: " + fab.getMeasuredWidth() + ", " + fab.getMeasuredHeight());
 		}
 		maxButtonWidth = width;
 		width += maxLabelWidth + labelMargin;
 
 		setMeasuredDimension(width, height);
-		Log.e("FloatingActionMenu.onMeasure", width + ", " + height);
 	}
 
 	@Override
@@ -94,8 +90,6 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 		int fabToggleLeft = buttonsHorizontalCenter - fabToggle.getMeasuredWidth() / 2;
 		fabToggle.layout(fabToggleLeft, fabToggleY, fabToggleLeft + fabToggle.getMeasuredWidth(), fabToggleY + fabToggle.getMeasuredHeight());
 
-		Log.e("FloatingActionMenu.onLayout", fabToggleLeft + ", " + fabToggleY + ", " + (fabToggleLeft + fabToggle.getMeasuredWidth()) + ", " + (fabToggleY + fabToggle.getMeasuredHeight()));
-
 		int nextY = fabToggleY - margin;
 		for (int i = fabList.size() - 1; i >= 0; i--) {
 			FloatingActionButton fab = fabList.get(i);
@@ -103,16 +97,14 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 			int x = buttonsHorizontalCenter - fab.getMeasuredWidth() / 2;
 			int y = nextY - fab.getMeasuredHeight();
 			fab.layout(x, y, x + fab.getMeasuredWidth(), y + fab.getMeasuredHeight());
-			Log.e("FloatingActionMenu.onLayout", "fab layout: " + x + ", " + y + ", " + (x + fab.getMeasuredWidth()) + ", " + (y + getMeasuredHeight()));
 			fab.setTranslationY(getMeasuredHeight());
 
 			TextView label = labelList.get(i);
 			int labelXAwayFromButton = labelXNearButton - label.getMeasuredWidth();
 			int labelLeft = labelXAwayFromButton;
 			int labelRight = labelXNearButton;
-			int labelTop = y - labelsVerticalOffset + (fab.getMeasuredHeight() - label.getMeasuredHeight()) / 2;
+			int labelTop = y - (fab.getMeasuredHeight() - label.getMeasuredHeight()) / 2;
 			label.layout(labelLeft, labelTop, labelRight, labelTop + label.getMeasuredHeight());
-			Log.e("FloatingActionMenu.onLayout", "label: " + labelLeft + ", " + labelTop + ", " + labelRight + ", " + (labelTop + label.getMeasuredHeight()));
 
 			nextY = y;
 		}
@@ -185,7 +177,7 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 				ObjectAnimator collapseYTransAnimator = new ObjectAnimator();
 				collapseYTransAnimator.setInterpolator(interpolator);
 				collapseYTransAnimator.setProperty(View.TRANSLATION_Y);
-				collapseYTransAnimator.setFloatValues(20, 0);
+				collapseYTransAnimator.setFloatValues(32, 0);
 				collapseYTransAnimator.setTarget(fab);
 				collapseYTransAnimator.setStartDelay(delay);
 				toggleOnAnimator.play(collapseYTransAnimator);
@@ -210,11 +202,12 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 					@Override
 					public void onAnimationStart(Animator animation) {
 						((View) collapseAlphaAnimator.getTarget()).setVisibility(VISIBLE);
+						((View) collapseAlphaAnimator.getTarget()).setClickable(true);
 					}
 
 					@Override
 					public void onAnimationEnd(Animator animation) {
-//						((View) collapseAlphaAnimator.getTarget()).setVisibility(GONE);
+						((View) collapseAlphaAnimator.getTarget()).setVisibility(VISIBLE);
 					}
 
 					@Override
@@ -251,7 +244,7 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 				ObjectAnimator collapseYTransAnimator = new ObjectAnimator();
 				collapseYTransAnimator.setInterpolator(interpolator);
 				collapseYTransAnimator.setProperty(View.TRANSLATION_Y);
-				collapseYTransAnimator.setFloatValues(0, 20);
+				collapseYTransAnimator.setFloatValues(0, 32);
 				collapseYTransAnimator.setTarget(fab);
 				collapseYTransAnimator.setStartDelay(delay);
 				toggleOffAnimator.play(collapseYTransAnimator);
@@ -280,7 +273,8 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 
 					@Override
 					public void onAnimationEnd(Animator animation) {
-						((View) collapseAlphaAnimator.getTarget()).setVisibility(VISIBLE);
+						((View) collapseAlphaAnimator.getTarget()).setVisibility(INVISIBLE);
+						((View) collapseAlphaAnimator.getTarget()).setClickable(false);
 					}
 
 					@Override

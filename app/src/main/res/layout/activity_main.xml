@@ -63,9 +63,9 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_margin="8dp"
-			fab:fab_normal_icon="@drawable/ic_mode_edit_white_18dp"
+			fab:fab_normal_icon="@drawable/ic_add_white_18dp"
 			fab:fab_type="mini"
-		    fab:fab_labelText="faba"
+			fab:fab_labelText="faba"
 			/>
 
 		<com.flask.floatingactionmenu.FloatingActionButton
@@ -73,9 +73,19 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_margin="8dp"
+			fab:fab_normal_icon="@drawable/ic_mode_edit_white_18dp"
+			fab:fab_type="mini"
+		    fab:fab_labelText="faba"
+			/>
+
+		<com.flask.floatingactionmenu.FloatingActionButton
+			android:id="@+id/fabc"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_margin="8dp"
 			fab:fab_normal_icon="@drawable/ic_add_white_18dp"
 			fab:fab_type="mini"
-			fab:fab_labelText="fabb"
+			fab:fab_labelText="fabc"
 			/>
 
 		<com.flask.floatingactionmenu.FloatingActionToggleButton
