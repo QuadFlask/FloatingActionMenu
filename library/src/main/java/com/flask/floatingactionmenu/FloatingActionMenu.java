@@ -4,39 +4,118 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.support.annotation.DimenRes;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
-import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FloatingActionMenu extends LinearLayout implements OnToggleListener {
-	private FloatingActionToggleButton fab;
-	private List<FloatingActionButton> fabList;
+public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
+	private FloatingActionToggleButton fabToggle;
+	private List<FloatingActionButton> fabList = new ArrayList<>();
+	private List<TextView> labelList = new ArrayList<>();
 	private AnimatorSet toggleOnAnimator, toggleOffAnimator;
+	private int labelsStyle;
 
 	public FloatingActionMenu(Context context) {
 		super(context);
-		init();
 	}
 
 	public FloatingActionMenu(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		init();
+		init(context, attrs);
 	}
 
 	public FloatingActionMenu(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
-		init();
+		init(context, attrs);
 	}
 
-	private void init() {
-		setOrientation(VERTICAL);
-//		setGravity(Gravity.CENTER_HORIZONTAL);
-		fabList = new ArrayList<>();
+	private void init(final Context context, AttributeSet attrs) {
+		if (attrs != null) initAttributes(context, attrs);
+	}
+
+	protected void initAttributes(Context context, AttributeSet attributeSet) {
+		TypedArray attr = getTypedArray(context, attributeSet, R.styleable.FloatingActionButton);
+		if (attr != null) {
+			try {
+				labelsStyle = attr.getResourceId(R.styleable.FloatingActionButton_fab_labelStyle, 0);
+			} finally {
+				attr.recycle();
+			}
+		}
+	}
+
+	private int maxButtonWidth, labelsVerticalOffset;
+
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		measureChildren(widthMeasureSpec, heightMeasureSpec);
+
+		int width = fabToggle.getMeasuredWidth(), height = fabToggle.getMeasuredHeight();
+		int margin = getDimension(R.dimen.fab_margin);
+		int labelMargin = getDimension(R.dimen.fab_label_margin);
+		int maxLabelWidth = 0;
+
+		Log.e("FloatingActionMenu.onMeasure", "fab: " + width + ", " + height);
+
+		for (int i = 0; i < fabList.size(); i++) {
+			FloatingActionButton fab = fabList.get(i);
+
+			width = Math.max(fab.getMeasuredWidth(), width);
+			height += fab.getMeasuredHeight() + margin * 2;
+			maxLabelWidth = Math.max(maxLabelWidth, labelList.get(i).getMeasuredWidth());
+			Log.e("FloatingActionMenu.onMeasure", "fab: " + fab.getMeasuredWidth() + ", " + fab.getMeasuredHeight());
+		}
+		maxButtonWidth = width;
+		width += maxLabelWidth + labelMargin;
+
+		setMeasuredDimension(width, height);
+		Log.e("FloatingActionMenu.onMeasure", width + ", " + height);
+	}
+
+	@Override
+	protected void onLayout(boolean changed, int l, int t, int r, int b) {
+		int fabToggleY = b - t - fabToggle.getMeasuredHeight();
+		int buttonsHorizontalCenter = r - l - fabToggle.getMeasuredWidth() / 2;
+		int margin = getDimension(R.dimen.fab_margin);
+		int labelMargin = getDimension(R.dimen.fab_label_margin);
+		int labelOffset = maxButtonWidth / 2 + labelMargin;
+		int labelXNearButton = buttonsHorizontalCenter - labelOffset;
+
+		int fabToggleLeft = buttonsHorizontalCenter - fabToggle.getMeasuredWidth() / 2;
+		fabToggle.layout(fabToggleLeft, fabToggleY, fabToggleLeft + fabToggle.getMeasuredWidth(), fabToggleY + fabToggle.getMeasuredHeight());
+
+		Log.e("FloatingActionMenu.onLayout", fabToggleLeft + ", " + fabToggleY + ", " + (fabToggleLeft + fabToggle.getMeasuredWidth()) + ", " + (fabToggleY + fabToggle.getMeasuredHeight()));
+
+		int nextY = fabToggleY - margin;
+		for (int i = fabList.size() - 1; i >= 0; i--) {
+			FloatingActionButton fab = fabList.get(i);
+
+			int x = buttonsHorizontalCenter - fab.getMeasuredWidth() / 2;
+			int y = nextY - fab.getMeasuredHeight();
+			fab.layout(x, y, x + fab.getMeasuredWidth(), y + fab.getMeasuredHeight());
+			Log.e("FloatingActionMenu.onLayout", "fab layout: " + x + ", " + y + ", " + (x + fab.getMeasuredWidth()) + ", " + (y + getMeasuredHeight()));
+			fab.setTranslationY(getMeasuredHeight());
+
+			TextView label = labelList.get(i);
+			int labelXAwayFromButton = labelXNearButton - label.getMeasuredWidth();
+			int labelLeft = labelXAwayFromButton;
+			int labelRight = labelXNearButton;
+			int labelTop = y - labelsVerticalOffset + (fab.getMeasuredHeight() - label.getMeasuredHeight()) / 2;
+			label.layout(labelLeft, labelTop, labelRight, labelTop + label.getMeasuredHeight());
+			Log.e("FloatingActionMenu.onLayout", "label: " + labelLeft + ", " + labelTop + ", " + labelRight + ", " + (labelTop + label.getMeasuredHeight()));
+
+			nextY = y;
+		}
 	}
 
 	@Override
@@ -45,19 +124,36 @@ public class FloatingActionMenu extends LinearLayout implements OnToggleListener
 		int childCount = getChildCount();
 		for (int i = 0; i < childCount - 1; i++) {
 			FloatingActionButton child = (FloatingActionButton) getChildAt(i);
-			child.setVisibility(GONE);
-			addFloatingActionButton(child);
+			child.setVisibility(INVISIBLE);
+			addFloatingActionButtonList(child);
 		}
 		setFloatingActionToggleButton((FloatingActionToggleButton) getChildAt(childCount - 1));
+
+		createLabels();
 	}
 
-	public void addFloatingActionButton(FloatingActionButton floatingActionButton) {
+	private void createLabels() {
+		Context context = new ContextThemeWrapper(getContext(), labelsStyle);
+
+		for (FloatingActionButton fab : fabList) {
+			String labelText = fab.getLabelText();
+
+			TextView label = new TextView(context);
+			label.setTextAppearance(getContext(), labelsStyle);
+			label.setText(labelText);
+
+			labelList.add(label);
+			addView(label);
+		}
+	}
+
+	public void addFloatingActionButtonList(FloatingActionButton floatingActionButton) {
 		fabList.add(floatingActionButton);
 	}
 
 	public void setFloatingActionToggleButton(FloatingActionToggleButton floatingActionToggleButton) {
-		fab = floatingActionToggleButton;
-		fab.setOnToggleListener(this);
+		fabToggle = floatingActionToggleButton;
+		fabToggle.setOnToggleListener(this);
 	}
 
 	@Override
@@ -73,7 +169,7 @@ public class FloatingActionMenu extends LinearLayout implements OnToggleListener
 			int count = fabList.size();
 			int inc = duration / count;
 
-			toggleOnAnimator = fab.getToggleOnAnimator();
+			toggleOnAnimator = fabToggle.getToggleOnAnimator();
 
 			Interpolator interpolator = new DecelerateInterpolator();
 			for (FloatingActionButton fab : fabList) {
@@ -140,7 +236,7 @@ public class FloatingActionMenu extends LinearLayout implements OnToggleListener
 			int count = fabList.size();
 			int inc = duration / count;
 
-			toggleOffAnimator = fab.getToggleOffAnimator();
+			toggleOffAnimator = fabToggle.getToggleOffAnimator();
 
 			Interpolator interpolator = new DecelerateInterpolator();
 			for (FloatingActionButton fab : fabList) {
@@ -198,5 +294,13 @@ public class FloatingActionMenu extends LinearLayout implements OnToggleListener
 				delay += inc;
 			}
 		}
+	}
+
+	protected int getDimension(@DimenRes int id) {
+		return getResources().getDimensionPixelSize(id);
+	}
+
+	protected TypedArray getTypedArray(Context context, AttributeSet attributeSet, int[] attr) {
+		return context.obtainStyledAttributes(attributeSet, attr, 0, 0);
 	}
 }

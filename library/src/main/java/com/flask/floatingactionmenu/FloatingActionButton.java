@@ -28,6 +28,7 @@ public class FloatingActionButton extends ImageButton {
 	protected int colorNormal;
 	protected int normalIcon;
 	protected Drawable normalIconDrawable;
+	protected String labelText;
 
 	public FloatingActionButton(Context context) {
 		super(context);
@@ -62,6 +63,7 @@ public class FloatingActionButton extends ImageButton {
 				colorDisabled = attr.getColor(R.styleable.FloatingActionButton_fab_colorDisabled, colorDisabled);
 				normalIcon = attr.getResourceId(R.styleable.FloatingActionButton_fab_normal_icon, 0);
 				type = attr.getInt(R.styleable.FloatingActionButton_fab_type, TYPE_NORMAL);
+				labelText = attr.getString(R.styleable.FloatingActionButton_fab_labelText);
 			} finally {
 				attr.recycle();
 			}
@@ -152,5 +154,9 @@ public class FloatingActionButton extends ImageButton {
 
 	protected TypedArray getTypedArray(Context context, AttributeSet attributeSet, int[] attr) {
 		return context.obtainStyledAttributes(attributeSet, attr, 0, 0);
+	}
+
+	public String getLabelText() {
+		return labelText;
 	}
 }

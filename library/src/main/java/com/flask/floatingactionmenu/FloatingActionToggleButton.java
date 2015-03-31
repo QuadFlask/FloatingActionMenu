@@ -63,6 +63,7 @@ public class FloatingActionToggleButton extends FloatingActionButton {
 				normalIcon = attr.getResourceId(R.styleable.FloatingActionButton_fab_normal_icon, 0);
 				type = attr.getInt(R.styleable.FloatingActionButton_fab_type, TYPE_NORMAL);
 				toggleIcon = attr.getResourceId(R.styleable.FloatingActionButton_fab_toggle_icon, 0);
+				labelText = attr.getString(R.styleable.FloatingActionButton_fab_labelText);
 			} finally {
 				attr.recycle();
 			}

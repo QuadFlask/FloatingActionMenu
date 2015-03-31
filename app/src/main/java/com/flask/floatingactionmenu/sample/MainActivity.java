@@ -23,5 +23,19 @@ public class MainActivity extends ActionBarActivity {
 				Toast.makeText(MainActivity.this, "fab1 clicked!", Toast.LENGTH_SHORT).show();
 			}
 		});
+		FloatingActionButton faba = (FloatingActionButton) findViewById(R.id.faba);
+		faba.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(MainActivity.this, "faba clicked!", Toast.LENGTH_SHORT).show();
+			}
+		});
+		FloatingActionButton fabb = (FloatingActionButton) findViewById(R.id.fabb);
+		fabb.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(MainActivity.this, "fabb clicked!", Toast.LENGTH_SHORT).show();
+			}
+		});
 	}
 }
