@@ -15,7 +15,7 @@ import android.view.animation.Interpolator;
 
 public class FloatingActionToggleButton extends FloatingActionButton {
 	private static final Interpolator interpolator = new AccelerateDecelerateInterpolator();
-	public static final int ANIMATION_DURATION = 300;
+	public static final int ANIMATION_DURATION = 200;
 	private static final float COLLAPSED_PLUS_ROTATION = 0f;
 	private static final float EXPANDED_PLUS_ROTATION = 90 + 45;
 

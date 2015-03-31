@@ -7,10 +7,10 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.DimenRes;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.TextView;
@@ -134,6 +134,8 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 			TextView label = new TextView(context);
 			label.setTextAppearance(getContext(), labelsStyle);
 			label.setText(labelText);
+			label.setVisibility(INVISIBLE);
+			label.setClickable(false);
 
 			labelList.add(label);
 			addView(label);
@@ -155,6 +157,8 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 		createCollapseAnimations();
 	}
 
+	private static final Interpolator interpolator = new AccelerateDecelerateInterpolator();
+
 	private void createExpandAnimations() {
 		if (toggleOnAnimator == null) {
 			int duration = FloatingActionToggleButton.ANIMATION_DURATION;
@@ -164,39 +168,73 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 
 			toggleOnAnimator = fabToggle.getToggleOnAnimator();
 
-			Interpolator interpolator = new DecelerateInterpolator();
 			for (FloatingActionButton fab : fabList) {
 				delay -= inc;
-				final ObjectAnimator collapseAlphaAnimator = new ObjectAnimator().ofFloat(fab, View.ALPHA, 0, 1f);
-				collapseAlphaAnimator.setInterpolator(interpolator);
-				collapseAlphaAnimator.setStartDelay(delay);
-				toggleOnAnimator.play(collapseAlphaAnimator);
+				final ObjectAnimator ExpandAlphaAnimator = new ObjectAnimator().ofFloat(fab, View.ALPHA, 0, 1f);
+				ExpandAlphaAnimator.setInterpolator(interpolator);
+				ExpandAlphaAnimator.setStartDelay(delay);
+				toggleOnAnimator.play(ExpandAlphaAnimator);
 
-				ObjectAnimator collapseYTransAnimator = new ObjectAnimator().ofFloat(fab, View.TRANSLATION_Y, 32, 0);
-				collapseYTransAnimator.setInterpolator(interpolator);
-				collapseYTransAnimator.setStartDelay(delay);
-				toggleOnAnimator.play(collapseYTransAnimator);
+				ObjectAnimator expandYTransAnimator = new ObjectAnimator().ofFloat(fab, View.TRANSLATION_Y, fab.getMeasuredHeight() / 4, 0);
+				expandYTransAnimator.setInterpolator(interpolator);
+				expandYTransAnimator.setStartDelay(delay);
+				toggleOnAnimator.play(expandYTransAnimator);
 
-				ObjectAnimator collapseXScaleAnimator = new ObjectAnimator().ofFloat(fab, View.SCALE_X, 0, 1f);
-				collapseXScaleAnimator.setInterpolator(interpolator);
-				collapseXScaleAnimator.setStartDelay(delay);
-				toggleOnAnimator.play(collapseXScaleAnimator);
+				ObjectAnimator expandXScaleAnimator = new ObjectAnimator().ofFloat(fab, View.SCALE_X, 0, 1f);
+				expandXScaleAnimator.setInterpolator(interpolator);
+				expandXScaleAnimator.setStartDelay(delay);
+				toggleOnAnimator.play(expandXScaleAnimator);
 
-				ObjectAnimator collapseYScaleAnimator = new ObjectAnimator().ofFloat(fab, View.SCALE_Y, 0, 1f);
-				collapseYScaleAnimator.setInterpolator(interpolator);
-				collapseYScaleAnimator.setStartDelay(delay);
-				toggleOnAnimator.play(collapseYScaleAnimator);
+				ObjectAnimator expandYScaleAnimator = new ObjectAnimator().ofFloat(fab, View.SCALE_Y, 0, 1f);
+				expandYScaleAnimator.setInterpolator(interpolator);
+				expandYScaleAnimator.setStartDelay(delay);
+				toggleOnAnimator.play(expandYScaleAnimator);
 
-				collapseAlphaAnimator.addListener(new Animator.AnimatorListener() {
+				ExpandAlphaAnimator.addListener(new Animator.AnimatorListener() {
 					@Override
 					public void onAnimationStart(Animator animation) {
-						((View) collapseAlphaAnimator.getTarget()).setVisibility(VISIBLE);
-						((View) collapseAlphaAnimator.getTarget()).setClickable(true);
+						((View) ExpandAlphaAnimator.getTarget()).setVisibility(VISIBLE);
+						((View) ExpandAlphaAnimator.getTarget()).setClickable(true);
 					}
 
 					@Override
 					public void onAnimationEnd(Animator animation) {
-						((View) collapseAlphaAnimator.getTarget()).setVisibility(VISIBLE);
+						((View) ExpandAlphaAnimator.getTarget()).setVisibility(VISIBLE);
+					}
+
+					@Override
+					public void onAnimationCancel(Animator animation) {
+					}
+
+					@Override
+					public void onAnimationRepeat(Animator animation) {
+					}
+				});
+			}
+
+			delay = duration;
+			for (TextView label : labelList) {
+				delay -= inc;
+				final ObjectAnimator expandAlphaAnimator = new ObjectAnimator().ofFloat(label, View.ALPHA, 0, 1f);
+				expandAlphaAnimator.setInterpolator(interpolator);
+				expandAlphaAnimator.setStartDelay(delay);
+				toggleOnAnimator.play(expandAlphaAnimator);
+
+				ObjectAnimator expandYTransAnimator = new ObjectAnimator().ofFloat(label, View.TRANSLATION_Y, label.getMeasuredHeight() / 4, 0);
+				expandYTransAnimator.setInterpolator(interpolator);
+				expandYTransAnimator.setStartDelay(delay);
+				toggleOnAnimator.play(expandYTransAnimator);
+
+				expandAlphaAnimator.addListener(new Animator.AnimatorListener() {
+					@Override
+					public void onAnimationStart(Animator animation) {
+						((View) expandAlphaAnimator.getTarget()).setVisibility(VISIBLE);
+						((View) expandAlphaAnimator.getTarget()).setClickable(true);
+					}
+
+					@Override
+					public void onAnimationEnd(Animator animation) {
+						((View) expandAlphaAnimator.getTarget()).setVisibility(VISIBLE);
 					}
 
 					@Override
@@ -220,14 +258,13 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 
 			toggleOffAnimator = fabToggle.getToggleOffAnimator();
 
-			Interpolator interpolator = new DecelerateInterpolator();
 			for (FloatingActionButton fab : fabList) {
 				final ObjectAnimator collapseAlphaAnimator = new ObjectAnimator().ofFloat(fab, View.ALPHA, 1f, 0);
 				collapseAlphaAnimator.setInterpolator(interpolator);
 				collapseAlphaAnimator.setStartDelay(delay);
 				toggleOffAnimator.play(collapseAlphaAnimator);
 
-				ObjectAnimator collapseYTransAnimator = new ObjectAnimator().ofFloat(fab, View.TRANSLATION_Y, 0, 32);
+				ObjectAnimator collapseYTransAnimator = new ObjectAnimator().ofFloat(fab, View.TRANSLATION_Y, 0, fab.getMeasuredHeight() / 4);
 				collapseYTransAnimator.setInterpolator(interpolator);
 				collapseYTransAnimator.setStartDelay(delay);
 				toggleOffAnimator.play(collapseYTransAnimator);
@@ -242,6 +279,39 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 				collapseYScaleAnimator.setStartDelay(delay);
 				toggleOffAnimator.play(collapseYScaleAnimator);
 
+				collapseAlphaAnimator.addListener(new Animator.AnimatorListener() {
+					@Override
+					public void onAnimationStart(Animator animation) {
+						((View) collapseAlphaAnimator.getTarget()).setVisibility(VISIBLE);
+					}
+
+					@Override
+					public void onAnimationEnd(Animator animation) {
+						((View) collapseAlphaAnimator.getTarget()).setVisibility(INVISIBLE);
+						((View) collapseAlphaAnimator.getTarget()).setClickable(false);
+					}
+
+					@Override
+					public void onAnimationCancel(Animator animation) {
+					}
+
+					@Override
+					public void onAnimationRepeat(Animator animation) {
+					}
+				});
+				delay += inc;
+			}
+			delay = 0;
+			for (TextView label : labelList) {
+				final ObjectAnimator collapseAlphaAnimator = new ObjectAnimator().ofFloat(label, View.ALPHA, 1f, 0);
+				collapseAlphaAnimator.setInterpolator(interpolator);
+				collapseAlphaAnimator.setStartDelay(delay);
+				toggleOffAnimator.play(collapseAlphaAnimator);
+
+				ObjectAnimator collapseYTransAnimator = new ObjectAnimator().ofFloat(label, View.TRANSLATION_Y, 0, label.getMeasuredHeight() / 4);
+				collapseYTransAnimator.setInterpolator(interpolator);
+				collapseYTransAnimator.setStartDelay(delay);
+				toggleOffAnimator.play(collapseYTransAnimator);
 				collapseAlphaAnimator.addListener(new Animator.AnimatorListener() {
 					@Override
 					public void onAnimationStart(Animator animation) {
