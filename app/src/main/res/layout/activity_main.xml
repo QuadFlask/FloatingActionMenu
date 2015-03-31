@@ -75,7 +75,7 @@
 			android:layout_margin="8dp"
 			fab:fab_normal_icon="@drawable/ic_mode_edit_white_18dp"
 			fab:fab_type="mini"
-		    fab:fab_labelText="faba"
+			fab:fab_labelText="faba"
 			/>
 
 		<com.flask.floatingactionmenu.FloatingActionButton
@@ -98,5 +98,12 @@
 			fab:fab_labelText="toggle"
 			/>
 	</com.flask.floatingactionmenu.FloatingActionMenu>
+
+	<EditText
+		android:layout_width="240dp"
+		android:layout_height="wrap_content"
+		android:id="@+id/editText"
+		android:layout_centerVertical="true"
+		android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

@@ -117,6 +117,7 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 		for (int i = 0; i < childCount - 1; i++) {
 			FloatingActionButton child = (FloatingActionButton) getChildAt(i);
 			child.setVisibility(INVISIBLE);
+			child.setClickable(false);
 			addFloatingActionButtonList(child);
 		}
 		setFloatingActionToggleButton((FloatingActionToggleButton) getChildAt(childCount - 1));
@@ -166,35 +167,23 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 			Interpolator interpolator = new DecelerateInterpolator();
 			for (FloatingActionButton fab : fabList) {
 				delay -= inc;
-				final ObjectAnimator collapseAlphaAnimator = new ObjectAnimator();
+				final ObjectAnimator collapseAlphaAnimator = new ObjectAnimator().ofFloat(fab, View.ALPHA, 0, 1f);
 				collapseAlphaAnimator.setInterpolator(interpolator);
-				collapseAlphaAnimator.setProperty(View.ALPHA);
-				collapseAlphaAnimator.setFloatValues(0, 1f);
-				collapseAlphaAnimator.setTarget(fab);
 				collapseAlphaAnimator.setStartDelay(delay);
 				toggleOnAnimator.play(collapseAlphaAnimator);
 
-				ObjectAnimator collapseYTransAnimator = new ObjectAnimator();
+				ObjectAnimator collapseYTransAnimator = new ObjectAnimator().ofFloat(fab, View.ALPHA, 32, 0);
 				collapseYTransAnimator.setInterpolator(interpolator);
-				collapseYTransAnimator.setProperty(View.TRANSLATION_Y);
-				collapseYTransAnimator.setFloatValues(32, 0);
-				collapseYTransAnimator.setTarget(fab);
 				collapseYTransAnimator.setStartDelay(delay);
 				toggleOnAnimator.play(collapseYTransAnimator);
 
-				ObjectAnimator collapseXScaleAnimator = new ObjectAnimator();
+				ObjectAnimator collapseXScaleAnimator = new ObjectAnimator().ofFloat(fab, View.ALPHA, 0, 1f);
 				collapseXScaleAnimator.setInterpolator(interpolator);
-				collapseXScaleAnimator.setProperty(View.SCALE_X);
-				collapseXScaleAnimator.setFloatValues(0, 1f);
-				collapseXScaleAnimator.setTarget(fab);
 				collapseXScaleAnimator.setStartDelay(delay);
 				toggleOnAnimator.play(collapseXScaleAnimator);
 
-				ObjectAnimator collapseYScaleAnimator = new ObjectAnimator();
+				ObjectAnimator collapseYScaleAnimator = new ObjectAnimator().ofFloat(fab, View.ALPHA, 0, 1f);
 				collapseYScaleAnimator.setInterpolator(interpolator);
-				collapseYScaleAnimator.setProperty(View.SCALE_Y);
-				collapseYScaleAnimator.setFloatValues(0, 1f);
-				collapseYScaleAnimator.setTarget(fab);
 				collapseYScaleAnimator.setStartDelay(delay);
 				toggleOnAnimator.play(collapseYScaleAnimator);
 
@@ -233,35 +222,24 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 
 			Interpolator interpolator = new DecelerateInterpolator();
 			for (FloatingActionButton fab : fabList) {
-				final ObjectAnimator collapseAlphaAnimator = new ObjectAnimator();
+				final ObjectAnimator collapseAlphaAnimator = new ObjectAnimator().ofFloat(fab, View.ALPHA, 1f, 0);
 				collapseAlphaAnimator.setInterpolator(interpolator);
-				collapseAlphaAnimator.setProperty(View.ALPHA);
-				collapseAlphaAnimator.setFloatValues(1f, 0);
-				collapseAlphaAnimator.setTarget(fab);
 				collapseAlphaAnimator.setStartDelay(delay);
 				toggleOffAnimator.play(collapseAlphaAnimator);
 
-				ObjectAnimator collapseYTransAnimator = new ObjectAnimator();
+				ObjectAnimator collapseYTransAnimator = new ObjectAnimator().ofFloat(fab, View.TRANSLATION_Y, 0, 32);
 				collapseYTransAnimator.setInterpolator(interpolator);
-				collapseYTransAnimator.setProperty(View.TRANSLATION_Y);
-				collapseYTransAnimator.setFloatValues(0, 32);
-				collapseYTransAnimator.setTarget(fab);
 				collapseYTransAnimator.setStartDelay(delay);
 				toggleOffAnimator.play(collapseYTransAnimator);
 
-				ObjectAnimator collapseXScaleAnimator = new ObjectAnimator();
+
+				ObjectAnimator collapseXScaleAnimator = new ObjectAnimator().ofFloat(fab, View.SCALE_X, 1f, 0);
 				collapseXScaleAnimator.setInterpolator(interpolator);
-				collapseXScaleAnimator.setProperty(View.SCALE_X);
-				collapseXScaleAnimator.setFloatValues(1f, 0);
-				collapseXScaleAnimator.setTarget(fab);
 				collapseXScaleAnimator.setStartDelay(delay);
 				toggleOffAnimator.play(collapseXScaleAnimator);
 
-				ObjectAnimator collapseYScaleAnimator = new ObjectAnimator();
+				ObjectAnimator collapseYScaleAnimator = new ObjectAnimator().ofFloat(fab, View.SCALE_Y, 1f, 0);
 				collapseYScaleAnimator.setInterpolator(interpolator);
-				collapseYScaleAnimator.setProperty(View.SCALE_Y);
-				collapseYScaleAnimator.setFloatValues(1f, 0);
-				collapseYScaleAnimator.setTarget(fab);
 				collapseYScaleAnimator.setStartDelay(delay);
 				toggleOffAnimator.play(collapseYScaleAnimator);
 
