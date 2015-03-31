@@ -172,17 +172,17 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 				collapseAlphaAnimator.setStartDelay(delay);
 				toggleOnAnimator.play(collapseAlphaAnimator);
 
-				ObjectAnimator collapseYTransAnimator = new ObjectAnimator().ofFloat(fab, View.ALPHA, 32, 0);
+				ObjectAnimator collapseYTransAnimator = new ObjectAnimator().ofFloat(fab, View.TRANSLATION_Y, 32, 0);
 				collapseYTransAnimator.setInterpolator(interpolator);
 				collapseYTransAnimator.setStartDelay(delay);
 				toggleOnAnimator.play(collapseYTransAnimator);
 
-				ObjectAnimator collapseXScaleAnimator = new ObjectAnimator().ofFloat(fab, View.ALPHA, 0, 1f);
+				ObjectAnimator collapseXScaleAnimator = new ObjectAnimator().ofFloat(fab, View.SCALE_X, 0, 1f);
 				collapseXScaleAnimator.setInterpolator(interpolator);
 				collapseXScaleAnimator.setStartDelay(delay);
 				toggleOnAnimator.play(collapseXScaleAnimator);
 
-				ObjectAnimator collapseYScaleAnimator = new ObjectAnimator().ofFloat(fab, View.ALPHA, 0, 1f);
+				ObjectAnimator collapseYScaleAnimator = new ObjectAnimator().ofFloat(fab, View.SCALE_Y, 0, 1f);
 				collapseYScaleAnimator.setInterpolator(interpolator);
 				collapseYScaleAnimator.setStartDelay(delay);
 				toggleOnAnimator.play(collapseYScaleAnimator);
