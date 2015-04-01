@@ -15,9 +15,9 @@ import android.view.animation.Interpolator;
 
 public class FloatingActionToggleButton extends FloatingActionButton {
 	private static final Interpolator interpolator = new AccelerateDecelerateInterpolator();
-	public static final int ANIMATION_DURATION = 200*40;
+	public static final int ANIMATION_DURATION = 200;
 	private static final float COLLAPSED_PLUS_ROTATION = 0f;
-	private static final float EXPANDED_PLUS_ROTATION = 90 + 45;
+	private static final float EXPANDED_ROTATION = 90 + 45;
 
 	private AnimatorSet toggleOnAnimator;
 	private AnimatorSet toggleOffAnimator;
@@ -43,12 +43,7 @@ public class FloatingActionToggleButton extends FloatingActionButton {
 	}
 
 	protected void init(final Context context, AttributeSet attrs) {
-		colorNormal = getColor(R.color.material_blue_500);
-		colorPressed = getColor(R.color.material_blue_600);
-		colorDisabled = getColor(android.R.color.darker_gray);
-
-		if (attrs != null) initAttributes(context, attrs);
-		updateBackground();
+		super.init(context, attrs);
 		applyDefaultToggleBehavior();
 	}
 
@@ -59,70 +54,30 @@ public class FloatingActionToggleButton extends FloatingActionButton {
 		if (attr != null) {
 			try {
 				toggleIcon = attr.getResourceId(R.styleable.FloatingActionButton_fab_toggle_icon, 0);
-				labelText = attr.getString(R.styleable.FloatingActionButton_fab_labelText);
 			} finally {
 				attr.recycle();
 			}
 		}
 	}
 
-	private void createAnimations() {
-		if (toggleOnAnimator == null) {
-			toggleOnAnimator = new AnimatorSet().setDuration(ANIMATION_DURATION);
-			toggleOffAnimator = new AnimatorSet().setDuration(ANIMATION_DURATION);
-
-			final ObjectAnimator toggleOnRotation = ObjectAnimator.ofFloat(rotatingDrawable, "rotation", COLLAPSED_PLUS_ROTATION, EXPANDED_PLUS_ROTATION);
-			final ObjectAnimator toggleOffRotation = ObjectAnimator.ofFloat(rotatingDrawable, "rotation", EXPANDED_PLUS_ROTATION, COLLAPSED_PLUS_ROTATION);
-			final ObjectAnimator toggleOnFading = ObjectAnimator.ofFloat(fadingDrawable, "fading", 0, 1f);
-			final ObjectAnimator toggleOffFading = ObjectAnimator.ofFloat(fadingDrawable, "fading", 1f, 0);
-
-			toggleOnRotation.setInterpolator(interpolator);
-			toggleOffRotation.setInterpolator(interpolator);
-			toggleOnFading.setInterpolator(interpolator);
-			toggleOffFading.setInterpolator(interpolator);
-
-			toggleOnRotation.setRepeatMode(ValueAnimator.RESTART);
-			toggleOffRotation.setRepeatMode(ValueAnimator.RESTART);
-			toggleOnFading.setRepeatMode(ValueAnimator.RESTART);
-			toggleOffFading.setRepeatMode(ValueAnimator.RESTART);
-
-			toggleOnAnimator.play(toggleOnRotation).with(toggleOnFading);
-			toggleOffAnimator.play(toggleOffRotation).with(toggleOffFading);
-		}
-	}
-
 	@Override
-	protected void updateBackground() {
-		LayerDrawable layerDrawable = new LayerDrawable(
-				new Drawable[]{
-						createFillDrawable(),
-						getIconDrawable()
-				});
-
-		setBackground(layerDrawable);
-	}
-
 	protected Drawable getIconDrawable() {
-		if (toggleIconDrawable == null) {
-			RotatingDrawable rotatingDrawable = new RotatingDrawable(getCopyOfDrawableFromResources(toggleIcon));
-			rotatingDrawable.setRotation(-EXPANDED_PLUS_ROTATION);
-			toggleIconDrawable = rotatingDrawable;
-		}
-
 		fadingDrawable = new FadingDrawable(new Drawable[]{
 				super.getIconDrawable(),
-				toggleIconDrawable
+				getToggleIconDrawable()
 		});
 		rotatingDrawable = new RotatingDrawable(fadingDrawable);
 
-		int circleSize = getDimension(type == TYPE_NORMAL ? R.dimen.fab_size_normal : R.dimen.fab_size_mini);
-		int inset = (circleSize - getDimension(type == TYPE_NORMAL ? R.dimen.fab_icon_size : R.dimen.fab_icon_size_mini)) / 2;
-
-		rotatingDrawable.setLayerInset(0,
-				shadowSize + inset, shadowSize + inset,
-				shadowSize + inset, shadowSize + inset);
-
 		return rotatingDrawable;
+	}
+
+	protected Drawable getToggleIconDrawable() {
+		if (toggleIconDrawable == null) {
+			RotatingDrawable rotatingDrawable = new RotatingDrawable(getCopyOfDrawableFromResources(toggleIcon));
+			rotatingDrawable.setRotation(-EXPANDED_ROTATION);
+			toggleIconDrawable = rotatingDrawable;
+		}
+		return toggleIconDrawable;
 	}
 
 	public void toggle() {
@@ -146,6 +101,31 @@ public class FloatingActionToggleButton extends FloatingActionButton {
 		if (!isOn) {
 			toggleOnAnimator.cancel();
 			toggleOffAnimator.start();
+		}
+	}
+
+	private void createAnimations() {
+		if (toggleOnAnimator == null) {
+			toggleOnAnimator = new AnimatorSet().setDuration(ANIMATION_DURATION);
+			toggleOffAnimator = new AnimatorSet().setDuration(ANIMATION_DURATION);
+
+			final ObjectAnimator toggleOnRotation = ObjectAnimator.ofFloat(rotatingDrawable, "rotation", COLLAPSED_PLUS_ROTATION, EXPANDED_ROTATION);
+			final ObjectAnimator toggleOffRotation = ObjectAnimator.ofFloat(rotatingDrawable, "rotation", EXPANDED_ROTATION, COLLAPSED_PLUS_ROTATION);
+			final ObjectAnimator toggleOnFading = ObjectAnimator.ofFloat(fadingDrawable, "fading", 0, 1f);
+			final ObjectAnimator toggleOffFading = ObjectAnimator.ofFloat(fadingDrawable, "fading", 1f, 0);
+
+			toggleOnRotation.setInterpolator(interpolator);
+			toggleOffRotation.setInterpolator(interpolator);
+			toggleOnFading.setInterpolator(interpolator);
+			toggleOffFading.setInterpolator(interpolator);
+
+			toggleOnRotation.setRepeatMode(ValueAnimator.RESTART);
+			toggleOffRotation.setRepeatMode(ValueAnimator.RESTART);
+			toggleOnFading.setRepeatMode(ValueAnimator.RESTART);
+			toggleOffFading.setRepeatMode(ValueAnimator.RESTART);
+
+			toggleOnAnimator.play(toggleOnRotation).with(toggleOnFading);
+			toggleOffAnimator.play(toggleOffRotation).with(toggleOffFading);
 		}
 	}
 

@@ -13,6 +13,7 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
@@ -70,24 +71,10 @@ public class FloatingActionButton extends ImageButton {
 		}
 	}
 
-	protected Drawable getIconDrawable() {
-		if (normalIconDrawable == null)
-			normalIconDrawable = getCopyOfDrawableFromResources(normalIcon);
-		return normalIconDrawable;
-	}
-
-	protected Drawable getCopyOfDrawableFromResources(@DrawableRes int rid) {
-		if (rid != 0) {
-			return getResources().getDrawable(rid).mutate().getConstantState().newDrawable();
-		} else {
-			return new ColorDrawable(Color.TRANSPARENT);
-		}
-	}
-
 	protected void updateBackground() {
 		LayerDrawable layerDrawable = new LayerDrawable(
 				new Drawable[]{
-						createFillDrawable(),
+						createFillStateListDrawable(),
 						getIconDrawable()
 				});
 
@@ -100,15 +87,15 @@ public class FloatingActionButton extends ImageButton {
 		setBackground(layerDrawable);
 	}
 
-	protected StateListDrawable createFillDrawable() {
+	protected StateListDrawable createFillStateListDrawable() {
 		StateListDrawable drawable = new StateListDrawable();
-		drawable.addState(new int[]{android.R.attr.state_pressed}, createDrawable(colorPressed));
-		drawable.addState(new int[]{-android.R.attr.state_enabled}, createDrawable(colorDisabled));
-		drawable.addState(new int[]{}, createDrawable(colorNormal));
+		drawable.addState(new int[]{android.R.attr.state_pressed}, createFillDrawable(colorPressed));
+		drawable.addState(new int[]{-android.R.attr.state_enabled}, createFillDrawable(colorDisabled));
+		drawable.addState(new int[]{}, createFillDrawable(colorNormal));
 		return drawable;
 	}
 
-	protected Drawable createDrawable(int color) {
+	protected Drawable createFillDrawable(int color) {
 		OvalShape ovalShape = new OvalShape();
 		ShapeDrawable shapeDrawable = new ShapeDrawable(ovalShape);
 		shapeDrawable.getPaint().setColor(color);
@@ -116,7 +103,14 @@ public class FloatingActionButton extends ImageButton {
 		Drawable shadowDrawable = getResources().getDrawable(type == TYPE_NORMAL ? R.drawable.shadow : R.drawable.shadow_mini);
 		LayerDrawable layerDrawable = new LayerDrawable(new Drawable[]{shadowDrawable, shapeDrawable});
 		layerDrawable.setLayerInset(1, shadowSize, shadowSize, shadowSize, shadowSize);
+		Log.e("FloatingActionButton.createFillDrawable", "shadow!" + this.toString());
 		return layerDrawable;
+	}
+
+	protected Drawable getIconDrawable() {
+		if (normalIconDrawable == null)
+			normalIconDrawable = getCopyOfDrawableFromResources(normalIcon);
+		return normalIconDrawable;
 	}
 
 	@Override
@@ -158,5 +152,13 @@ public class FloatingActionButton extends ImageButton {
 
 	public String getLabelText() {
 		return labelText;
+	}
+
+	protected Drawable getCopyOfDrawableFromResources(@DrawableRes int rid) {
+		if (rid != 0) {
+			return getResources().getDrawable(rid).mutate().getConstantState().newDrawable();
+		} else {
+			return new ColorDrawable(Color.TRANSPARENT);
+		}
 	}
 }

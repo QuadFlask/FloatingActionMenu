@@ -63,7 +63,6 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 		measureChildren(widthMeasureSpec, heightMeasureSpec);
 
 		int width = fabToggle.getMeasuredWidth(), height = fabToggle.getMeasuredHeight();
-		int margin = getDimension(R.dimen.fab_margin);
 		int labelMargin = getDimension(R.dimen.fab_label_margin);
 		int maxLabelWidth = 0;
 
@@ -71,7 +70,7 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 			FloatingActionButton fab = fabList.get(i);
 
 			width = Math.max(fab.getMeasuredWidth(), width);
-			height += fab.getMeasuredHeight() + margin * 2;
+			height += fab.getMeasuredHeight();
 			maxLabelWidth = Math.max(maxLabelWidth, labelList.get(i).getMeasuredWidth());
 		}
 		maxButtonWidth = width;
@@ -84,7 +83,6 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		int fabToggleY = b - t - fabToggle.getMeasuredHeight();
 		int buttonsHorizontalCenter = r - l - fabToggle.getMeasuredWidth() / 2;
-		int margin = getDimension(R.dimen.fab_margin);
 		int labelMargin = getDimension(R.dimen.fab_label_margin);
 		int labelOffset = maxButtonWidth / 2 + labelMargin;
 		int labelXNearButton = buttonsHorizontalCenter - labelOffset;
@@ -92,7 +90,7 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 		int fabToggleLeft = buttonsHorizontalCenter - fabToggle.getMeasuredWidth() / 2;
 		fabToggle.layout(fabToggleLeft, fabToggleY, fabToggleLeft + fabToggle.getMeasuredWidth(), fabToggleY + fabToggle.getMeasuredHeight());
 
-		int nextY = fabToggleY - margin;
+		int nextY = fabToggleY;
 		for (int i = fabList.size() - 1; i >= 0; i--) {
 			FloatingActionButton fab = fabList.get(i);
 
@@ -116,7 +114,7 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 	protected void onFinishInflate() {
 		super.onFinishInflate();
 		int childCount = getChildCount();
-		for (int i = 0; i < childCount - 1; i++) {
+			for (int i = 0; i < childCount-1; i++) {
 			FloatingActionButton child = (FloatingActionButton) getChildAt(i);
 			child.setVisibility(INVISIBLE);
 			child.setClickable(false);
