@@ -6,8 +6,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class FadingBackgroundView extends View {
-	private int fading = 0x00;
-	private int color = 0xffffff;
+	private int color = 0x80ffffff;
 
 	public FadingBackgroundView(Context context) {
 		super(context);
@@ -24,32 +23,29 @@ public class FadingBackgroundView extends View {
 	@Override
 	protected void onFinishInflate() {
 		super.onFinishInflate();
-		updateBackgroundColor();
+		setBackgroundColor(color);
+		setAlpha(0);
 	}
 
-	public void setFading(int fading) {
-		this.fading = Math.max(0, Math.min(fading, 0xff));
-		updateBackgroundColor();
-		invalidate();
-	}
-
-	public int getFading() {
-		return fading;
-	}
-
-	private void updateBackgroundColor() {
-		if (fading == 0) {
+	@Override
+	public void setAlpha(float alpha) {
+		super.setAlpha(alpha);
+		if (alpha == 0) {
 			setVisibility(GONE);
 			setClickable(false);
 		} else {
 			setVisibility(VISIBLE);
 			setClickable(true);
 		}
-		setBackgroundColor(fading << 24 | color);
+	}
+
+	@Override
+	public float getAlpha() {
+		return super.getAlpha();
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		return fading != 0;
+		return getAlpha() != 0;
 	}
 }

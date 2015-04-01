@@ -27,7 +27,7 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 	private FloatingActionToggleButton fabToggle;
 	private List<FloatingActionButton> fabList = new ArrayList<>();
 	private List<TextView> labelList = new ArrayList<>();
-	private FadingBackgroundView fadingBackgroundView;
+	private View fadingBackgroundView;
 	private AnimatorSet toggleOnAnimator, toggleOffAnimator;
 	private int labelsStyle;
 	private int maxButtonWidth;
@@ -196,7 +196,7 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 			}
 
 			if (fadingBackgroundView != null) {
-				ObjectAnimator objectAnimator = new ObjectAnimator().ofInt(fadingBackgroundView, "fading", 0, 0x80);
+				ObjectAnimator objectAnimator = new ObjectAnimator().ofFloat(fadingBackgroundView, View.ALPHA, 0, 1f);
 				objectAnimator.setInterpolator(interpolator);
 				objectAnimator.setDuration(duration);
 				toggleOnAnimator.play(objectAnimator);
@@ -236,7 +236,7 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 			}
 
 			if (fadingBackgroundView != null) {
-				ObjectAnimator objectAnimator = new ObjectAnimator().ofInt(fadingBackgroundView, "fading", 0x80, 0);
+				ObjectAnimator objectAnimator = new ObjectAnimator().ofFloat(fadingBackgroundView, View.ALPHA, 1f, 0);
 				objectAnimator.setInterpolator(interpolator);
 				objectAnimator.setDuration(duration);
 				toggleOffAnimator.play(objectAnimator);
