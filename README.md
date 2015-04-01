@@ -20,94 +20,117 @@ FloatingActionButton with menu like Google's Inbox app style.
 
 Create from code is not tested, so you should use xml. 
 
+### Propertis
+
+#### Color 
+- fab_colorPressed
+- fab_colorNormal
+- fab_colorDisabled
+
+#### Size
+- fab_type
+
+> `normal` or `mini`
+
+#### Icon
+- fab_normal_icon
+- fab_toggle_icon
+
+> icon size should be **24dp** for `normal` or **18dp** for `mini`
+
+#### Label
+- fab_labelStyle
+- fab_labelText
+
+
 ```xml
 <com.flask.floatingactionmenu.FloatingActionButton
-		android:id="@+id/fab1"
+	android:id="@+id/fab1"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:layout_alignParentBottom="true"
+	android:layout_alignParentLeft="true"
+	android:layout_margin="16dp"
+	fab:fab_normal_icon="@drawable/ic_add_white_24dp"
+	/>
+
+<com.flask.floatingactionmenu.FloatingActionButton
+	android:id="@+id/fab2"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:layout_alignParentTop="true"
+	android:layout_alignParentRight="true"
+	android:layout_margin="16dp"
+	fab:fab_normal_icon="@drawable/ic_add_white_18dp"
+	fab:fab_type="mini"
+	/>
+
+<com.flask.floatingactionmenu.FloatingActionToggleButton
+	android:id="@+id/fab3"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:layout_alignParentBottom="true"
+	android:layout_centerHorizontal="true"
+	android:layout_margin="16dp"
+	fab:fab_normal_icon="@drawable/ic_add_white_24dp"
+	fab:fab_toggle_icon="@drawable/ic_mode_edit_white_24dp"
+	/>
+
+<com.flask.floatingactionmenu.FadingBackgroundView
+	android:id="@+id/fading"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"/>
+
+<com.flask.floatingactionmenu.FloatingActionMenu
+	android:id="@+id/fam"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:layout_alignParentBottom="true"
+	android:layout_alignParentRight="true"
+	android:layout_margin="4dp"
+	fab:fab_labelStyle="@style/fab_labels_style"
+	>
+
+	<com.flask.floatingactionmenu.FloatingActionButton
+		android:id="@+id/faba"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true"
-		android:layout_alignParentLeft="true"
-		android:layout_margin="16dp"
-		fab:fab_normal_icon="@drawable/ic_add_white_24dp"
+		android:layout_margin="8dp"
+		fab:fab_normal_icon="@drawable/ic_add_white_18dp"
+		fab:fab_type="mini"
+		fab:fab_labelText="faba"
 		/>
 
 	<com.flask.floatingactionmenu.FloatingActionButton
-		android:id="@+id/fab2"
+		android:id="@+id/fabb"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_alignParentTop="true"
-		android:layout_alignParentRight="true"
-		android:layout_margin="16dp"
+		android:layout_margin="8dp"
+		fab:fab_normal_icon="@drawable/ic_mode_edit_white_18dp"
+		fab:fab_type="mini"
+		fab:fab_labelText="faba"
+		/>
+
+	<com.flask.floatingactionmenu.FloatingActionButton
+		android:id="@+id/fabc"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_margin="8dp"
 		fab:fab_normal_icon="@drawable/ic_add_white_18dp"
 		fab:fab_type="mini"
+		fab:fab_labelText="fabc"
 		/>
 
 	<com.flask.floatingactionmenu.FloatingActionToggleButton
-		android:id="@+id/fab3"
+		android:id="@+id/fab_toggle"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true"
-		android:layout_centerHorizontal="true"
-		android:layout_margin="16dp"
+		android:layout_marginTop="8dp"
 		fab:fab_normal_icon="@drawable/ic_add_white_24dp"
 		fab:fab_toggle_icon="@drawable/ic_mode_edit_white_24dp"
+		fab:fab_labelText="toggle button"
 		/>
-
-	<com.flask.floatingactionmenu.FadingBackgroundView
-		android:id="@+id/fading"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"/>
-
-	<com.flask.floatingactionmenu.FloatingActionMenu
-		android:id="@+id/fam"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true"
-		android:layout_alignParentRight="true"
-		android:layout_margin="4dp"
-		fab:fab_labelStyle="@style/fab_labels_style"
-		>
-
-		<com.flask.floatingactionmenu.FloatingActionButton
-			android:id="@+id/faba"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_margin="8dp"
-			fab:fab_normal_icon="@drawable/ic_add_white_18dp"
-			fab:fab_type="mini"
-			fab:fab_labelText="faba"
-			/>
-
-		<com.flask.floatingactionmenu.FloatingActionButton
-			android:id="@+id/fabb"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_margin="8dp"
-			fab:fab_normal_icon="@drawable/ic_mode_edit_white_18dp"
-			fab:fab_type="mini"
-			fab:fab_labelText="faba"
-			/>
-
-		<com.flask.floatingactionmenu.FloatingActionButton
-			android:id="@+id/fabc"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_margin="8dp"
-			fab:fab_normal_icon="@drawable/ic_add_white_18dp"
-			fab:fab_type="mini"
-			fab:fab_labelText="fabc"
-			/>
-
-		<com.flask.floatingactionmenu.FloatingActionToggleButton
-			android:id="@+id/fab_toggle"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="8dp"
-			fab:fab_normal_icon="@drawable/ic_add_white_24dp"
-			fab:fab_toggle_icon="@drawable/ic_mode_edit_white_24dp"
-			fab:fab_labelText="toggle button"
-			/>
-	</com.flask.floatingactionmenu.FloatingActionMenu>
+</com.flask.floatingactionmenu.FloatingActionMenu>
 ```
 
 
