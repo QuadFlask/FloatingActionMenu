@@ -16,6 +16,28 @@ FloatingActionButton with menu like Google's Inbox app style.
 ![screenshot2](https://github.com/QuadFlask/FloatingActionMenu/blob/master/captures/device-2015-04-01-163240.png)
 
 
+## How to add dependency?
+
+This library is not released in Maven Central, but instead you can use [JitPack](https://jitpack.io)
+
+add remote maven url
+
+```groovy
+repositories {
+	maven {
+		url "https://jitpack.io"
+	}
+}
+````
+
+then add a library dependency
+
+```groovy
+dependencies {
+	compile 'com.github.QuadFlask:FloatingActionMenu:0.0.1@aar'
+}
+```
+
 ## Usage
 
 Create from code is not tested, so you should use xml. 
