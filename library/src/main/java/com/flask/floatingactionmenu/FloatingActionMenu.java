@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.DimenRes;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.Property;
 import android.view.ContextThemeWrapper;
 import android.view.View;
@@ -81,23 +82,18 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
-		int fabToggleY = b - t - fabToggle.getMeasuredHeight();
 		int buttonsHorizontalCenter = r - l - fabToggle.getMeasuredWidth() / 2;
 		int labelMargin = getDimension(R.dimen.fab_label_margin);
 		int labelOffset = maxButtonWidth / 2 + labelMargin;
 		int labelXNearButton = buttonsHorizontalCenter - labelOffset;
 
-		int fabToggleLeft = buttonsHorizontalCenter - fabToggle.getMeasuredWidth() / 2;
-		fabToggle.layout(fabToggleLeft, fabToggleY, fabToggleLeft + fabToggle.getMeasuredWidth(), fabToggleY + fabToggle.getMeasuredHeight());
-
-		int nextY = fabToggleY;
+		int nextY = b - t;
 		for (int i = fabList.size() - 1; i >= 0; i--) {
 			FloatingActionButton fab = fabList.get(i);
 
 			int x = buttonsHorizontalCenter - fab.getMeasuredWidth() / 2;
 			int y = nextY - fab.getMeasuredHeight();
 			fab.layout(x, y, x + fab.getMeasuredWidth(), y + fab.getMeasuredHeight());
-			fab.setTranslationY(getMeasuredHeight());
 
 			TextView label = labelList.get(i);
 			int labelXAwayFromButton = labelXNearButton - label.getMeasuredWidth();
@@ -114,13 +110,15 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 	protected void onFinishInflate() {
 		super.onFinishInflate();
 		int childCount = getChildCount();
-			for (int i = 0; i < childCount-1; i++) {
+		for (int i = 0; i < childCount - 1; i++) {
 			FloatingActionButton child = (FloatingActionButton) getChildAt(i);
 			child.setVisibility(INVISIBLE);
 			child.setClickable(false);
 			addFloatingActionButtonList(child);
 		}
 		setFloatingActionToggleButton((FloatingActionToggleButton) getChildAt(childCount - 1));
+		fabToggle.setVisibility(VISIBLE);
+		fabToggle.setClickable(true);
 
 		createLabels();
 	}
@@ -149,6 +147,7 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 	public void setFloatingActionToggleButton(FloatingActionToggleButton floatingActionToggleButton) {
 		fabToggle = floatingActionToggleButton;
 		fabToggle.setOnToggleListener(this);
+		fabList.add(fabToggle);
 	}
 
 	@Override
@@ -169,14 +168,16 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 			toggleOnAnimator = fabToggle.getToggleOnAnimator();
 
 			for (FloatingActionButton fab : fabList) {
-				delay -= inc;
-				final ObjectAnimator expandAlphaAnimator = createObjectAnimator(fab, View.ALPHA, delay, 0, 1f);
-				toggleOnAnimator.play(expandAlphaAnimator);
-				toggleOnAnimator.play(createObjectAnimator(fab, View.TRANSLATION_Y, delay, fab.getMeasuredHeight() / 4, 0));
-				toggleOnAnimator.play(createObjectAnimator(fab, View.SCALE_X, delay, 0, 1f));
-				toggleOnAnimator.play(createObjectAnimator(fab, View.SCALE_Y, delay, 0, 1f));
+				if (!fab.equals(fabToggle)) {
+					delay -= inc;
+					final ObjectAnimator expandAlphaAnimator = createObjectAnimator(fab, View.ALPHA, delay, 0, 1f);
+					toggleOnAnimator.play(expandAlphaAnimator);
+					toggleOnAnimator.play(createObjectAnimator(fab, View.TRANSLATION_Y, delay, fab.getMeasuredHeight() / 4, 0));
+					toggleOnAnimator.play(createObjectAnimator(fab, View.SCALE_X, delay, 0, 1f));
+					toggleOnAnimator.play(createObjectAnimator(fab, View.SCALE_Y, delay, 0, 1f));
 
-				expandAlphaAnimator.addListener(new AutoAlphaShowingAnimatorListener(expandAlphaAnimator));
+					expandAlphaAnimator.addListener(new AutoAlphaShowingAnimatorListener(expandAlphaAnimator));
+				}
 			}
 
 			delay = duration;
@@ -201,14 +202,16 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 			toggleOffAnimator = fabToggle.getToggleOffAnimator();
 
 			for (FloatingActionButton fab : fabList) {
-				final ObjectAnimator collapseAlphaAnimator = createObjectAnimator(fab, View.ALPHA, delay, 1f, 0);
-				toggleOffAnimator.play(collapseAlphaAnimator);
-				toggleOffAnimator.play(createObjectAnimator(fab, View.TRANSLATION_Y, delay, 0, fab.getMeasuredHeight() / 4));
-				toggleOffAnimator.play(createObjectAnimator(fab, View.SCALE_X, delay, 1f, 0));
-				toggleOffAnimator.play(createObjectAnimator(fab, View.SCALE_Y, delay, 1f, 0));
+				if (!fab.equals(fabToggle)) {
+					final ObjectAnimator collapseAlphaAnimator = createObjectAnimator(fab, View.ALPHA, delay, 1f, 0);
+					toggleOffAnimator.play(collapseAlphaAnimator);
+					toggleOffAnimator.play(createObjectAnimator(fab, View.TRANSLATION_Y, delay, 0, fab.getMeasuredHeight() / 4));
+					toggleOffAnimator.play(createObjectAnimator(fab, View.SCALE_X, delay, 1f, 0));
+					toggleOffAnimator.play(createObjectAnimator(fab, View.SCALE_Y, delay, 1f, 0));
 
-				collapseAlphaAnimator.addListener(new AutoAlphaHidingAnimatorListener(collapseAlphaAnimator));
-				delay += inc;
+					collapseAlphaAnimator.addListener(new AutoAlphaHidingAnimatorListener(collapseAlphaAnimator));
+					delay += inc;
+				}
 			}
 			delay = 0;
 			for (TextView label : labelList) {
