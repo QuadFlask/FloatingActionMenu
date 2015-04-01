@@ -24,7 +24,7 @@ public class MainActivity extends ActionBarActivity {
 		setOnClickEvent(R.id.fab_toggle, "toggle");
 
 		FadingBackgroundView fadingBackgroundView = (FadingBackgroundView) findViewById(R.id.fading);
-		FloatingActionMenu floatingActionMenu = (FloatingActionMenu) findViewById(R.id.fam);
+		final FloatingActionMenu floatingActionMenu = (FloatingActionMenu) findViewById(R.id.fam);
 		floatingActionMenu.setFadingBackgroundView(fadingBackgroundView);
 
 		floatingActionMenu.setLabelText(0, "faba : Wow 0");
@@ -38,8 +38,26 @@ public class MainActivity extends ActionBarActivity {
 				if (fab instanceof FloatingActionToggleButton) {
 					FloatingActionToggleButton fatb = (FloatingActionToggleButton) fab;
 					if (fatb.isToggleOn()) toast(fab.getLabelText());
-				} else
+				} else {
 					toast(fab.getLabelText());
+					floatingActionMenu.removeFloatingActionButton(fab);
+				}
+			}
+		});
+
+//		FloatingActionMenuBuilder
+//				.with(this)
+//				.
+
+		final FloatingActionToggleButton fab3 = (FloatingActionToggleButton) findViewById(R.id.fab3);
+		fab3.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (fab3.isToggleOn()) {
+					floatingActionMenu.setVisibility(View.GONE);
+				} else {
+					floatingActionMenu.setVisibility(View.VISIBLE);
+				}
 			}
 		});
 	}

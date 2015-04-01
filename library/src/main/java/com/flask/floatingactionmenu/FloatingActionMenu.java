@@ -116,7 +116,7 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 			FloatingActionButton child = (FloatingActionButton) getChildAt(i);
 			child.setVisibility(INVISIBLE);
 			child.setClickable(false);
-			addFloatingActionButtonList(child);
+			fabList.add(child);
 		}
 		setFloatingActionToggleButton((FloatingActionToggleButton) getChildAt(childCount - 1));
 		fabToggle.setVisibility(VISIBLE);
@@ -140,10 +140,6 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 			labelList.add(label);
 			addView(label);
 		}
-	}
-
-	public void addFloatingActionButtonList(FloatingActionButton floatingActionButton) {
-		fabList.add(floatingActionButton);
 	}
 
 	public void setFloatingActionToggleButton(FloatingActionToggleButton floatingActionToggleButton) {
@@ -182,17 +178,11 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 			for (FloatingActionButton fab : fabList) {
 				if (!fab.equals(fabToggle)) {
 					delay -= inc;
-					final ObjectAnimator expandAlphaAnimator = createObjectAnimator(fab, View.ALPHA, delay, 0, 1f);
-					toggleOnAnimator.play(expandAlphaAnimator);
-					toggleOnAnimator.play(createObjectAnimator(fab, View.TRANSLATION_Y, delay, fab.getMeasuredHeight() / 4, 0));
-					toggleOnAnimator.play(createObjectAnimator(fab, View.SCALE_X, delay, 0, 1f));
-					toggleOnAnimator.play(createObjectAnimator(fab, View.SCALE_Y, delay, 0, 1f));
-
-					expandAlphaAnimator.addListener(new AutoAlphaShowingAnimatorListener(expandAlphaAnimator));
+					applyAnimator(fab, delay, true, true);
 				}
 			}
 
-			delay = duration;
+			delay = duration + inc;
 			for (TextView label : labelList) {
 				delay -= inc;
 				final ObjectAnimator expandAlphaAnimator = createObjectAnimator(label, View.ALPHA, delay, 0, 1f);
@@ -218,21 +208,15 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 
 			for (FloatingActionButton fab : fabList) {
 				if (!fab.equals(fabToggle)) {
-					final ObjectAnimator collapseAlphaAnimator = createObjectAnimator(fab, View.ALPHA, delay, 1f, 0);
-					toggleOffAnimator.play(collapseAlphaAnimator);
-					toggleOffAnimator.play(createObjectAnimator(fab, View.TRANSLATION_Y, delay, 0, fab.getMeasuredHeight() / 4));
-					toggleOffAnimator.play(createObjectAnimator(fab, View.SCALE_X, delay, 1f, 0));
-					toggleOffAnimator.play(createObjectAnimator(fab, View.SCALE_Y, delay, 1f, 0));
-
-					collapseAlphaAnimator.addListener(new AutoAlphaHidingAnimatorListener(collapseAlphaAnimator));
+					applyAnimator(fab, delay, false, true);
 					delay += inc;
 				}
 			}
-			delay = 0;
+			delay = -inc;
 			for (TextView label : labelList) {
-				final ObjectAnimator collapseAlphaAnimator = createObjectAnimator(label, View.ALPHA, delay, 1f, 0);
+				final ObjectAnimator collapseAlphaAnimator = createObjectAnimator(label, View.ALPHA, Math.max(0, delay), 1f, 0);
 				toggleOffAnimator.play(collapseAlphaAnimator);
-				toggleOffAnimator.play(createObjectAnimator(label, View.TRANSLATION_Y, delay, 0, label.getMeasuredHeight() / 4));
+				toggleOffAnimator.play(createObjectAnimator(label, View.TRANSLATION_Y, Math.max(0, delay), 0, label.getMeasuredHeight() / 4));
 
 				collapseAlphaAnimator.addListener(new AutoAlphaHidingAnimatorListener(collapseAlphaAnimator));
 				delay += inc;
@@ -240,6 +224,18 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 
 			if (fadingBackgroundView != null)
 				toggleOffAnimator.play(createObjectAnimator(fadingBackgroundView, View.ALPHA, 0, 1f, 0).setDuration(duration));
+		}
+	}
+
+	private void applyAnimator(View target, int delay, boolean toggle, boolean scaling) {
+		AnimatorSet animatorSet = toggle ? toggleOnAnimator : toggleOffAnimator;
+		int[] s = new int[]{toggle ? 0 : 1, toggle ? 1 : 0};
+
+		animatorSet.play(createObjectAnimator(target, View.ALPHA, delay, s[0], s[1]));
+		animatorSet.play(createObjectAnimator(target, View.TRANSLATION_Y, delay, s[1] * target.getMeasuredHeight() / 4, s[0] * target.getMeasuredHeight() / 4));
+		if (scaling) {
+			animatorSet.play(createObjectAnimator(target, View.SCALE_X, delay, s[0], s[1]));
+			animatorSet.play(createObjectAnimator(target, View.SCALE_Y, delay, s[0], s[1]));
 		}
 	}
 
@@ -265,6 +261,12 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 				}
 			});
 		}
+	}
+
+	public void removeFloatingActionButton(FloatingActionButton fab) {
+		int i = fabList.indexOf(fab);
+		removeView(fabList.remove(i));
+		removeView(labelList.remove(i));
 	}
 
 	static class AutoAlphaShowingAnimatorListener extends AnimatorListenerAdapter {

@@ -163,4 +163,16 @@ public class FloatingActionButton extends ImageButton {
 			return new ColorDrawable(Color.TRANSPARENT);
 		}
 	}
+
+	@Override
+	public void setAlpha(float alpha) {
+		super.setAlpha(alpha);
+		if (alpha == 0) {
+			setVisibility(GONE);
+			setClickable(false);
+		} else {
+			setVisibility(VISIBLE);
+			setClickable(true);
+		}
+	}
 }

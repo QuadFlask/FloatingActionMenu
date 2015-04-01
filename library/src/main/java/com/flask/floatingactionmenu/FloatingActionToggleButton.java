@@ -169,7 +169,6 @@ public class FloatingActionToggleButton extends FloatingActionButton {
 		return toggleOffAnimator;
 	}
 
-
 	public void setOnToggleListener(OnToggleListener onToggleListener) {
 		this.onToggleListener = onToggleListener;
 	}
