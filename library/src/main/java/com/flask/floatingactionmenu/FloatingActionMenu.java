@@ -27,6 +27,7 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 	private FloatingActionToggleButton fabToggle;
 	private List<FloatingActionButton> fabList = new ArrayList<>();
 	private List<TextView> labelList = new ArrayList<>();
+	private FadingBackgroundView fadingBackgroundView;
 	private AnimatorSet toggleOnAnimator, toggleOffAnimator;
 	private int labelsStyle;
 	private int maxButtonWidth;
@@ -150,6 +151,10 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 		fabList.add(fabToggle);
 	}
 
+	public void setFadingBackgroundView(FadingBackgroundView fadingBackgroundView) {
+		this.fadingBackgroundView = fadingBackgroundView;
+	}
+
 	@Override
 	public void onToggle(boolean isOn) {
 		createExpandAnimations();
@@ -189,6 +194,13 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 
 				expandAlphaAnimator.addListener(new AutoAlphaShowingAnimatorListener(expandAlphaAnimator));
 			}
+
+			if (fadingBackgroundView != null) {
+				ObjectAnimator objectAnimator = new ObjectAnimator().ofInt(fadingBackgroundView, "fading", 0, 0x80);
+				objectAnimator.setInterpolator(interpolator);
+				objectAnimator.setDuration(duration);
+				toggleOnAnimator.play(objectAnimator);
+			}
 		}
 	}
 
@@ -221,6 +233,13 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 
 				collapseAlphaAnimator.addListener(new AutoAlphaHidingAnimatorListener(collapseAlphaAnimator));
 				delay += inc;
+			}
+
+			if (fadingBackgroundView != null) {
+				ObjectAnimator objectAnimator = new ObjectAnimator().ofInt(fadingBackgroundView, "fading", 0x80, 0);
+				objectAnimator.setInterpolator(interpolator);
+				objectAnimator.setDuration(duration);
+				toggleOffAnimator.play(objectAnimator);
 			}
 		}
 	}

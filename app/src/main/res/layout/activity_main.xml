@@ -38,12 +38,18 @@
 		fab:fab_toggle_icon="@drawable/ic_mode_edit_white_24dp"
 		/>
 
+	<com.flask.floatingactionmenu.FadingBackgroundView
+		android:id="@+id/fading"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"/>
+
 	<com.flask.floatingactionmenu.FloatingActionMenu
 		android:id="@+id/fam"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
 		android:layout_alignParentRight="true"
+		android:layout_margin="4dp"
 		fab:fab_labelStyle="@style/fab_labels_style"
 		>
 

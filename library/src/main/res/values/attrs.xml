@@ -15,5 +15,6 @@
         <attr name="fab_toggle_icon" format="reference" />
         <attr name="fab_labelStyle" format="reference" />
         <attr name="fab_labelText" format="string" />
+        <attr name="fab_fadingBackground" format="reference"/>
     </declare-styleable>
 </resources>

@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.flask.floatingactionmenu.FadingBackgroundView;
+import com.flask.floatingactionmenu.FloatingActionMenu;
+
 
 public class MainActivity extends ActionBarActivity {
 
@@ -19,6 +22,10 @@ public class MainActivity extends ActionBarActivity {
 		setOnClickEvent(R.id.fabb, "fabb");
 		setOnClickEvent(R.id.fabc, "fabc");
 		setOnClickEvent(R.id.fab_toggle, "toggle");
+
+		FloatingActionMenu floatingActionMenu = (FloatingActionMenu) findViewById(R.id.fam);
+		FadingBackgroundView fadingBackgroundView = (FadingBackgroundView) findViewById(R.id.fading);
+		floatingActionMenu.setFadingBackgroundView(fadingBackgroundView);
 	}
 
 	private void setOnClickEvent(int id, final String msg) {
