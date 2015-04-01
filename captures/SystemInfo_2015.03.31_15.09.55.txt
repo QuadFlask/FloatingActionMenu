@@ -1,0 +1,34 @@
+TASK com.flask.floatingactionmenu.sample id=378
+  ACTIVITY com.flask.floatingactionmenu.sample/.MainActivity 43398ca8 pid=18269
+    Local FragmentActivity 426443e8 State:
+      mCreated=truemResumed=true mStopped=false mReallyStopped=false
+      mLoadersStarted=true
+    FragmentManager misc state:
+      mActivity=com.flask.floatingactionmenu.sample.MainActivity@426443e8
+      mContainer=android.support.v4.app.FragmentActivity$2@42645f28
+      mCurState=5 mStateSaved=false mDestroyed=false
+    View Hierarchy:
+      com.android.internal.policy.impl.PhoneWindow$DecorView{4264b650 V.E..... ... 0,0-1080,1776}
+        android.widget.LinearLayout{4264c330 V.E..... ... 0,0-1080,1776}
+          android.view.ViewStub{4264fa88 G.E..... ... 0,0-0,0 #102030e}
+          android.widget.FrameLayout{4264feb8 V.E..... ... 0,75-1080,1776}
+            android.support.v7.internal.widget.ActionBarOverlayLayout{42658c30 V.ED.... ... 0,0-1080,1701 #7f090030 app:id/decor_content_parent}
+              android.support.v7.internal.widget.NativeActionModeAwareLayout{4265a810 V.ED.... ... 0,168-1080,1701 #1020002 android:id/content}
+                android.widget.RelativeLayout{4267c0f8 V.E..... ... 0,0-1080,1533}
+                  com.flask.floatingactionmenu.FloatingActionButton{4267ca18 VFED..C. ... 12,1281-252,1521 #7f090040 app:id/fab}
+                  com.flask.floatingactionmenu.FloatingActionButton{4265a3d8 VFED..C. ... 420,1281-660,1521 #7f090041 app:id/fab1}
+                  com.flask.floatingactionmenu.FloatingActionButton{42653150 VFED..C. ... 876,12-1068,204 #7f090042 app:id/fab2}
+                  com.flask.floatingactionmenu.FloatingActionToggleButton{42644658 VFED..C. ... 456,1317-624,1485 #7f090043 app:id/fab3}
+                  com.flask.floatingactionmenu.FloatingActionMenu{42642d30 V.E..... ... 864,632-1032,1485 #7f090044 app:id/fbm}
+                    com.flask.floatingactionmenu.FloatingActionItem{4265c648 V.E..... ... 24,24-144,301}
+                      com.flask.floatingactionmenu.FloatingActionButton{4267e398 VFED..C. ... -36,-36-156,156 #7f090045 app:id/fabaa}
+                      android.widget.TextView{4264ee78 V.ED.... ... 0,0-0,277}
+                      android.widget.TextView{427018d8 V.ED.... ... 0,0-0,0}
+                    com.flask.floatingactionmenu.FloatingActionButton{42651cd0 VFED..C. ... -12,313-180,505 #7f090046 app:id/faba}
+                    com.flask.floatingactionmenu.FloatingActionButton{42677d28 VFED..C. ... -12,481-180,673 #7f090047 app:id/fabb}
+                    com.flask.floatingactionmenu.FloatingActionToggleButton{426542e8 VFED..C. ... 0,685-168,853 #7f090048 app:id/fab_toggle}
+              android.support.v7.internal.widget.ActionBarContainer{4265ad78 V.ED.... ... 0,0-1080,168 #7f090031 app:id/action_bar_container}
+                android.support.v7.widget.Toolbar{4265b848 V.E..... ... 0,0-1080,168 #7f090032 app:id/action_bar}
+                  android.widget.TextView{42645178 V.ED.... ... 48,43-594,124}
+                  android.support.v7.widget.ActionMenuView{426f72f8 V.E..... ... 1080,0-1080,168}
+                android.support.v7.internal.widget.ActionBarContextView{4266f128 G.E..... ... 0,0-0,0 #7f090033 app:id/action_context_bar}

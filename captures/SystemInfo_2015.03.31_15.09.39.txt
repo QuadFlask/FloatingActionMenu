@@ -1,0 +1,87 @@
+Applications Graphics Acceleration Info:
+Uptime: 933292819 Realtime: 2435594504
+
+** Graphics info for pid 18269 [com.flask.floatingactionmenu.sample] **
+
+Recent DisplayList operations
+              DrawBitmap
+            DrawDisplayList
+              DrawBitmapRect
+              Save
+              DrawOval
+              RestoreToCount
+              Save
+              Translate
+              Rotate
+              Translate
+              DrawBitmap
+              Save
+              Translate
+              Rotate
+              Translate
+              DrawBitmap
+              RestoreToCount
+        DrawPatch
+      DrawDisplayList
+      DrawPatch
+  RestoreToCount
+DrawRect
+multiDraw
+  DrawBitmap
+DrawOval
+DrawOval
+DrawBitmap
+DrawBitmap
+DrawBitmap
+DrawOval
+DrawBitmap
+DrawBitmapRect
+DrawOval
+DrawBitmap
+DrawBitmap
+DrawBitmap
+DrawBitmap
+DrawBitmap
+DrawBitmapRect
+DrawOval
+DrawOval
+DrawOval
+DrawOval
+multiDraw
+  DrawBitmap
+DrawBitmap
+DrawBitmap
+DrawBitmap
+DrawPatch
+DrawPatch
+
+Caches:
+Current memory usage / total memory usage (bytes):
+  TextureCache           484128 / 75497472
+  LayerCache                  0 / 50331648
+  RenderBufferCache           0 /  8388608
+  GradientCache               0 /  1048576
+  PathCache                   0 / 33554432
+  TextDropShadowCache         0 /  6291456
+  PatchCache                192 /   131072
+  FontRenderer 0 A8     1048576 /  1048576
+  FontRenderer 0 RGBA         0 /        0
+  FontRenderer 0 total  1048576 /  1048576
+Other:
+  FboCache                    0 /       16
+Total memory usage:
+  1532896 bytes, 1.46 MB
+
+Profile data in ms:
+
+	com.flask.floatingactionmenu.sample/com.flask.floatingactionmenu.sample.MainActivity/android.view.ViewRootImpl@42644030
+View hierarchy:
+
+  com.flask.floatingactionmenu.sample/com.flask.floatingactionmenu.sample.MainActivity/android.view.ViewRootImpl@42644030
+  24 views, 2.95 kB of display lists, 2 frames rendered
+
+
+Total ViewRootImpl: 1
+Total Views:        24
+Total DisplayList:  2.95 kB
+
