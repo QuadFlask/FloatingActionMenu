@@ -152,6 +152,10 @@ public class FloatingActionButton extends ImageButton {
 		return labelText;
 	}
 
+	public void setLabelText(String labelText) {
+		this.labelText = labelText;
+	}
+
 	protected Drawable getCopyOfDrawableFromResources(@DrawableRes int rid) {
 		if (rid != 0) {
 			return getResources().getDrawable(rid).mutate().getConstantState().newDrawable();

@@ -28,6 +28,7 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 	private List<FloatingActionButton> fabList = new ArrayList<>();
 	private List<TextView> labelList = new ArrayList<>();
 	private View fadingBackgroundView;
+
 	private AnimatorSet toggleOnAnimator, toggleOffAnimator;
 	private int labelsStyle;
 	private int maxButtonWidth;
@@ -242,11 +243,28 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 		}
 	}
 
+	public void setLabelText(int index, String text) {
+		labelList.get(index).setText(text);
+		fabList.get(index).setLabelText(text);
+	}
+
 	private ObjectAnimator createObjectAnimator(Object target, Property property, long delay, float... values) {
 		ObjectAnimator objectAnimator = new ObjectAnimator().ofFloat(target, property, values);
 		objectAnimator.setInterpolator(interpolator);
 		objectAnimator.setStartDelay(delay);
 		return objectAnimator;
+	}
+
+	public void setOnFloatingActionMenuSelectedListener(final OnFloatingActionMenuSelectedListener onFloatingActionMenuSelectedListener) {
+		for (FloatingActionButton fab : fabList) {
+			final FloatingActionButton fFab = fab;
+			fFab.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					onFloatingActionMenuSelectedListener.onFloatingActionMenuSelected(fFab);
+				}
+			});
+		}
 	}
 
 	static class AutoAlphaShowingAnimatorListener extends AnimatorListenerAdapter {

@@ -136,8 +136,8 @@ public class FloatingActionToggleButton extends FloatingActionButton {
 		super.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (isDefaultBehavior) toggle();
 				if (l != null) l.onClick(v);
+				if (isDefaultBehavior) toggle();
 			}
 		});
 	}
