@@ -131,7 +131,7 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 		for (FloatingActionButton fab : fabList) {
 			String labelText = fab.getLabelText();
 
-			TextView label = new TextView(context);
+			TextView label = new AutoVisibilityTextView(context);
 			label.setTextAppearance(getContext(), labelsStyle);
 			label.setText(labelText);
 			label.setVisibility(INVISIBLE);
@@ -185,11 +185,7 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 			delay = duration + inc;
 			for (TextView label : labelList) {
 				delay -= inc;
-				final ObjectAnimator expandAlphaAnimator = createObjectAnimator(label, View.ALPHA, delay, 0, 1f);
-				toggleOnAnimator.play(expandAlphaAnimator);
-				toggleOnAnimator.play(createObjectAnimator(label, View.TRANSLATION_Y, delay, label.getMeasuredHeight() / 4, 0));
-
-				expandAlphaAnimator.addListener(new AutoAlphaShowingAnimatorListener(expandAlphaAnimator));
+				applyAnimator(label, delay, true, false);
 			}
 
 			if (fadingBackgroundView != null)
@@ -214,11 +210,7 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 			}
 			delay = -inc;
 			for (TextView label : labelList) {
-				final ObjectAnimator collapseAlphaAnimator = createObjectAnimator(label, View.ALPHA, Math.max(0, delay), 1f, 0);
-				toggleOffAnimator.play(collapseAlphaAnimator);
-				toggleOffAnimator.play(createObjectAnimator(label, View.TRANSLATION_Y, Math.max(0, delay), 0, label.getMeasuredHeight() / 4));
-
-				collapseAlphaAnimator.addListener(new AutoAlphaHidingAnimatorListener(collapseAlphaAnimator));
+				applyAnimator(label, delay, false, false);
 				delay += inc;
 			}
 
