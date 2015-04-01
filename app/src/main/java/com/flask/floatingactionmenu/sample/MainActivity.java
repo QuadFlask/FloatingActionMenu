@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.flask.floatingactionmenu.FadingBackgroundView;
 import com.flask.floatingactionmenu.FloatingActionMenu;
+import com.flask.floatingactionmenu.FloatingActionToggleButton;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -23,9 +24,17 @@ public class MainActivity extends ActionBarActivity {
 		setOnClickEvent(R.id.fabc, "fabc");
 		setOnClickEvent(R.id.fab_toggle, "toggle");
 
-		FloatingActionMenu floatingActionMenu = (FloatingActionMenu) findViewById(R.id.fam);
 		FadingBackgroundView fadingBackgroundView = (FadingBackgroundView) findViewById(R.id.fading);
+		FloatingActionMenu floatingActionMenu = (FloatingActionMenu) findViewById(R.id.fam);
+		final FloatingActionToggleButton floatingActionToggleButton = (FloatingActionToggleButton) findViewById(R.id.fab_toggle);
+
 		floatingActionMenu.setFadingBackgroundView(fadingBackgroundView);
+		fadingBackgroundView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				floatingActionToggleButton.toggleOff();
+			}
+		});
 	}
 
 	private void setOnClickEvent(int id, final String msg) {

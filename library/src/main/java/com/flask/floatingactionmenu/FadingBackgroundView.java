@@ -46,6 +46,6 @@ public class FadingBackgroundView extends View {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		return getAlpha() != 0;
+		return getAlpha() != 0 & super.onTouchEvent(event);
 	}
 }

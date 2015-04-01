@@ -195,12 +195,8 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 				expandAlphaAnimator.addListener(new AutoAlphaShowingAnimatorListener(expandAlphaAnimator));
 			}
 
-			if (fadingBackgroundView != null) {
-				ObjectAnimator objectAnimator = new ObjectAnimator().ofFloat(fadingBackgroundView, View.ALPHA, 0, 1f);
-				objectAnimator.setInterpolator(interpolator);
-				objectAnimator.setDuration(duration);
-				toggleOnAnimator.play(objectAnimator);
-			}
+			if (fadingBackgroundView != null)
+				toggleOnAnimator.play(createObjectAnimator(fadingBackgroundView, View.ALPHA, 0, 0, 1).setDuration(duration));
 		}
 	}
 
@@ -235,12 +231,8 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 				delay += inc;
 			}
 
-			if (fadingBackgroundView != null) {
-				ObjectAnimator objectAnimator = new ObjectAnimator().ofFloat(fadingBackgroundView, View.ALPHA, 1f, 0);
-				objectAnimator.setInterpolator(interpolator);
-				objectAnimator.setDuration(duration);
-				toggleOffAnimator.play(objectAnimator);
-			}
+			if (fadingBackgroundView != null)
+				toggleOffAnimator.play(createObjectAnimator(fadingBackgroundView, View.ALPHA, 0, 1f, 0).setDuration(duration));
 		}
 	}
 
