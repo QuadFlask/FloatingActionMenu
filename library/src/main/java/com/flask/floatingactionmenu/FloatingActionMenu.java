@@ -6,11 +6,13 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Rect;
 import android.support.annotation.DimenRes;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Property;
 import android.view.ContextThemeWrapper;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -27,8 +29,9 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 	private List<TextView> labelList = new ArrayList<>();
 	private AnimatorSet toggleOnAnimator, toggleOffAnimator;
 	private int labelsStyle;
-
 	private int maxButtonWidth;
+	private int fadingColor = 0xffffff;
+	private Rect menuArea;
 
 	public FloatingActionMenu(Context context) {
 		super(context);
@@ -63,7 +66,7 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		measureChildren(widthMeasureSpec, heightMeasureSpec);
 
-		int width = fabToggle.getMeasuredWidth(), height = fabToggle.getMeasuredHeight();
+		int width = fabToggle.getMeasuredWidth(), height = 0;
 		int labelMargin = getDimension(R.dimen.fab_label_margin);
 		int maxLabelWidth = 0;
 
@@ -76,8 +79,9 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 		}
 		maxButtonWidth = width;
 		width += maxLabelWidth + labelMargin;
-
 		setMeasuredDimension(width, height);
+
+		menuArea = new Rect(getLeft(), getTop(), getRight(), getBottom());
 	}
 
 	@Override

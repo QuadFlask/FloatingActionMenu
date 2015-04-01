@@ -13,7 +13,6 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
@@ -103,7 +102,6 @@ public class FloatingActionButton extends ImageButton {
 		Drawable shadowDrawable = getResources().getDrawable(type == TYPE_NORMAL ? R.drawable.shadow : R.drawable.shadow_mini);
 		LayerDrawable layerDrawable = new LayerDrawable(new Drawable[]{shadowDrawable, shapeDrawable});
 		layerDrawable.setLayerInset(1, shadowSize, shadowSize, shadowSize, shadowSize);
-		Log.e("FloatingActionButton.createFillDrawable", "shadow!" + this.toString());
 		return layerDrawable;
 	}
 

@@ -29,6 +29,7 @@ public class FloatingActionToggleButton extends FloatingActionButton {
 
 	protected boolean isOn = false;
 	private OnToggleListener onToggleListener;
+	private boolean isDefaultBehavior = true;
 
 	public FloatingActionToggleButton(Context context) {
 		super(context);
@@ -84,14 +85,13 @@ public class FloatingActionToggleButton extends FloatingActionButton {
 		isOn = !isOn;
 		createAnimations();
 
-		if (onToggleListener != null) onToggleListener.onToggle(isOn);
-
 		if (isOn) toggleOn();
 		else toggleOff();
 	}
 
 	public void toggleOn() {
 		if (isOn) {
+			if (onToggleListener != null) onToggleListener.onToggle(isOn);
 			toggleOffAnimator.cancel();
 			toggleOnAnimator.start();
 		}
@@ -99,6 +99,7 @@ public class FloatingActionToggleButton extends FloatingActionButton {
 
 	public void toggleOff() {
 		if (!isOn) {
+			if (onToggleListener != null) onToggleListener.onToggle(isOn);
 			toggleOnAnimator.cancel();
 			toggleOffAnimator.start();
 		}
@@ -129,8 +130,20 @@ public class FloatingActionToggleButton extends FloatingActionButton {
 		}
 	}
 
+	@Override
+	public void setOnClickListener(final OnClickListener l) {
+		super.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (isDefaultBehavior) toggle();
+				if (l != null) l.onClick(v);
+			}
+		});
+	}
+
 	public void applyDefaultToggleBehavior() {
-		setOnClickListener(new OnClickListener() {
+		isDefaultBehavior = true;
+		super.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				toggle();
@@ -139,7 +152,8 @@ public class FloatingActionToggleButton extends FloatingActionButton {
 	}
 
 	public void cancelDefaultToggleBehavior() {
-		setOnClickListener(null);
+		isDefaultBehavior = false;
+		super.setOnClickListener(null);
 	}
 
 	public boolean isToggleOn() {

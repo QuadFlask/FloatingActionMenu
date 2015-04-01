@@ -7,7 +7,7 @@
                 android:background="#ff242628">
 
 	<com.flask.floatingactionmenu.FloatingActionButton
-		android:id="@+id/fab"
+		android:id="@+id/fab1"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
@@ -39,7 +39,7 @@
 		/>
 
 	<com.flask.floatingactionmenu.FloatingActionMenu
-		android:id="@+id/fbm"
+		android:id="@+id/fam"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
@@ -84,15 +84,8 @@
 			android:layout_marginTop="8dp"
 			fab:fab_normal_icon="@drawable/ic_add_white_24dp"
 			fab:fab_toggle_icon="@drawable/ic_mode_edit_white_24dp"
-			fab:fab_labelText="toggle"
+			fab:fab_labelText="toggle button"
 			/>
 	</com.flask.floatingactionmenu.FloatingActionMenu>
-
-	<EditText
-		android:layout_width="240dp"
-		android:layout_height="wrap_content"
-		android:id="@+id/editText"
-		android:layout_centerVertical="true"
-		android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>
