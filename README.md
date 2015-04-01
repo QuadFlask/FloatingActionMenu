@@ -1,5 +1,6 @@
 FloatingActionMenu
 --------
+![https://img.shields.io/github/tag/QuadFlask/FloatingActionMenu.svg?label=maven](https://img.shields.io/github/tag/QuadFlask/FloatingActionMenu.svg?label=maven)
 
 FloatingActionButton with menu like Google's Inbox app style.
 
