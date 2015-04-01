@@ -49,6 +49,9 @@ Create from code is not tested, so you should use xml.
 - fab_colorPressed
 - fab_colorNormal
 - fab_colorDisabled
+- fab_fadingColor
+
+> `fab_fadingColor` work with `FadingBackgroundView` only
 
 #### Size
 - fab_type
