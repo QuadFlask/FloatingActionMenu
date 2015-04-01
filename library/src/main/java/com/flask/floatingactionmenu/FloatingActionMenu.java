@@ -261,62 +261,6 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 		removeView(labelList.remove(i));
 	}
 
-	static class AutoAlphaShowingAnimatorListener extends AnimatorListenerAdapter {
-		private ObjectAnimator objectAnimator;
-
-		AutoAlphaShowingAnimatorListener(ObjectAnimator objectAnimator) {
-			this.objectAnimator = objectAnimator;
-		}
-
-		@Override
-		public void onAnimationStart(Animator animation) {
-			((View) objectAnimator.getTarget()).setVisibility(VISIBLE);
-			((View) objectAnimator.getTarget()).setClickable(true);
-		}
-
-		@Override
-		public void onAnimationEnd(Animator animation) {
-			((View) objectAnimator.getTarget()).setVisibility(VISIBLE);
-		}
-	}
-
-	static class AutoAlphaHidingAnimatorListener extends AnimatorListenerAdapter {
-		private ObjectAnimator objectAnimator;
-
-		AutoAlphaHidingAnimatorListener(ObjectAnimator objectAnimator) {
-			this.objectAnimator = objectAnimator;
-		}
-
-		@Override
-		public void onAnimationStart(Animator animation) {
-			((View) objectAnimator.getTarget()).setVisibility(VISIBLE);
-		}
-
-		@Override
-		public void onAnimationEnd(Animator animation) {
-			((View) objectAnimator.getTarget()).setVisibility(INVISIBLE);
-			((View) objectAnimator.getTarget()).setClickable(false);
-		}
-	}
-
-	static abstract class AnimatorListenerAdapter implements AnimatorListener {
-		@Override
-		public void onAnimationStart(Animator animation) {
-		}
-
-		@Override
-		public void onAnimationEnd(Animator animation) {
-		}
-
-		@Override
-		public void onAnimationCancel(Animator animation) {
-		}
-
-		@Override
-		public void onAnimationRepeat(Animator animation) {
-		}
-	}
-
 	protected int getDimension(@DimenRes int id) {
 		return getResources().getDimensionPixelSize(id);
 	}
