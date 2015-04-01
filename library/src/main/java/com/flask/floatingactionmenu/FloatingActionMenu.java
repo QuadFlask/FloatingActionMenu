@@ -30,8 +30,6 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 	private AnimatorSet toggleOnAnimator, toggleOffAnimator;
 	private int labelsStyle;
 	private int maxButtonWidth;
-	private int fadingColor = 0xffffff;
-	private Rect menuArea;
 
 	public FloatingActionMenu(Context context) {
 		super(context);
@@ -80,8 +78,6 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 		maxButtonWidth = width;
 		width += maxLabelWidth + labelMargin;
 		setMeasuredDimension(width, height);
-
-		menuArea = new Rect(getLeft(), getTop(), getRight(), getBottom());
 	}
 
 	@Override
@@ -90,8 +86,8 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 		int labelMargin = getDimension(R.dimen.fab_label_margin);
 		int labelOffset = maxButtonWidth / 2 + labelMargin;
 		int labelXNearButton = buttonsHorizontalCenter - labelOffset;
-
 		int nextY = b - t;
+
 		for (int i = fabList.size() - 1; i >= 0; i--) {
 			FloatingActionButton fab = fabList.get(i);
 
