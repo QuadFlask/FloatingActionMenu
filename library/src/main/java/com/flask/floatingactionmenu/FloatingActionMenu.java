@@ -153,6 +153,12 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 
 	public void setFadingBackgroundView(FadingBackgroundView fadingBackgroundView) {
 		this.fadingBackgroundView = fadingBackgroundView;
+		this.fadingBackgroundView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				fabToggle.toggleOff();
+			}
+		});
 	}
 
 	@Override

@@ -26,15 +26,7 @@ public class MainActivity extends ActionBarActivity {
 
 		FadingBackgroundView fadingBackgroundView = (FadingBackgroundView) findViewById(R.id.fading);
 		FloatingActionMenu floatingActionMenu = (FloatingActionMenu) findViewById(R.id.fam);
-		final FloatingActionToggleButton floatingActionToggleButton = (FloatingActionToggleButton) findViewById(R.id.fab_toggle);
-
 		floatingActionMenu.setFadingBackgroundView(fadingBackgroundView);
-		fadingBackgroundView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				floatingActionToggleButton.toggleOff();
-			}
-		});
 	}
 
 	private void setOnClickEvent(int id, final String msg) {
