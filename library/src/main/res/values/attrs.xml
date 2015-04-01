@@ -16,5 +16,6 @@
         <attr name="fab_labelStyle" format="reference" />
         <attr name="fab_labelText" format="string" />
         <attr name="fab_fadingBackground" format="reference"/>
+        <attr name="fab_fadingColor" format="color"/>
     </declare-styleable>
 </resources>
