@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <color name="ticket">#DBAE00</color>
+    <color name="ticket_press">#fBEE20</color>
+    <color name="remainder">#5473FB</color>
+    <color name="remainder_press">#7493FB</color>
+</resources>

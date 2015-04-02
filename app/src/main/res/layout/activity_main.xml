@@ -4,7 +4,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:context=".MainActivity"
-                android:background="#ff242628">
+                android:background="#6295F8">
+
+	<ImageView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerInParent="true"
+		android:scaleX="0.5"
+		android:scaleY="0.5"
+		android:src="@drawable/ic_zero_inbox"/>
 
 	<com.flask.floatingactionmenu.FloatingActionButton
 		android:id="@+id/fab1"
@@ -71,6 +79,8 @@
 			fab:fab_normal_icon="@drawable/ic_mode_edit_white_18dp"
 			fab:fab_type="mini"
 			fab:fab_labelText="faba"
+		    fab:fab_colorNormal="@color/remainder"
+		    fab:fab_colorPressed="@color/remainder_press"
 			/>
 
 		<com.flask.floatingactionmenu.FloatingActionButton
@@ -81,6 +91,8 @@
 			fab:fab_normal_icon="@drawable/ic_add_white_18dp"
 			fab:fab_type="mini"
 			fab:fab_labelText="fabc"
+		    fab:fab_colorNormal="@color/ticket"
+			fab:fab_colorPressed="@color/ticket_press"
 			/>
 
 		<com.flask.floatingactionmenu.FloatingActionToggleButton
