@@ -39,6 +39,13 @@ dependencies {
 }
 ```
 
+> for proguard, you may need this
+> 
+> ```
+> #FAM
+> -keep class com.flask.floatingactionmenu.** { *; }
+> ```
+
 ## Usage
 
 Create from code is not tested, so you should use xml. 
