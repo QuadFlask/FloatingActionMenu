@@ -1,10 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
                 xmlns:fab="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context=".MainActivity"
-                android:background="#6295F8">
+                android:background="#6295F8"
+                tools:context=".MainActivity">
 
 	<ImageView
 		android:layout_width="wrap_content"
@@ -13,6 +13,11 @@
 		android:scaleX="0.5"
 		android:scaleY="0.5"
 		android:src="@drawable/ic_zero_inbox"/>
+
+	<EditText
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerInParent="true"/>
 
 	<com.flask.floatingactionmenu.FloatingActionButton
 		android:id="@+id/fab1"
@@ -28,8 +33,8 @@
 		android:id="@+id/fab2"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_alignParentTop="true"
 		android:layout_alignParentRight="true"
+		android:layout_alignParentTop="true"
 		android:layout_margin="16dp"
 		fab:fab_normal_icon="@drawable/ic_add_white_18dp"
 		fab:fab_type="mini"
@@ -66,10 +71,10 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_margin="8dp"
+			fab:fab_labelText="faba"
 			fab:fab_normal_icon="@drawable/ic_add_white_18dp"
 			fab:fab_toggle_icon="@drawable/ic_mode_edit_white_18dp"
 			fab:fab_type="mini"
-			fab:fab_labelText="faba"
 			/>
 
 		<com.flask.floatingactionmenu.FloatingActionButton
@@ -77,11 +82,11 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_margin="8dp"
+			fab:fab_colorNormal="@color/remainder"
+			fab:fab_colorPressed="@color/remainder_press"
+			fab:fab_labelText="faba"
 			fab:fab_normal_icon="@drawable/ic_mode_edit_white_18dp"
 			fab:fab_type="mini"
-			fab:fab_labelText="faba"
-		    fab:fab_colorNormal="@color/remainder"
-		    fab:fab_colorPressed="@color/remainder_press"
 			/>
 
 		<com.flask.floatingactionmenu.FloatingActionButton
@@ -89,11 +94,11 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_margin="8dp"
+			fab:fab_colorNormal="@color/ticket"
+			fab:fab_colorPressed="@color/ticket_press"
+			fab:fab_labelText="fabc"
 			fab:fab_normal_icon="@drawable/ic_add_white_18dp"
 			fab:fab_type="mini"
-			fab:fab_labelText="fabc"
-		    fab:fab_colorNormal="@color/ticket"
-			fab:fab_colorPressed="@color/ticket_press"
 			/>
 
 		<com.flask.floatingactionmenu.FloatingActionToggleButton
@@ -101,9 +106,9 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="8dp"
+			fab:fab_labelText="toggle button"
 			fab:fab_normal_icon="@drawable/ic_add_white_24dp"
 			fab:fab_toggle_icon="@drawable/ic_mode_edit_white_24dp"
-			fab:fab_labelText="toggle button"
 			/>
 	</com.flask.floatingactionmenu.FloatingActionMenu>
 

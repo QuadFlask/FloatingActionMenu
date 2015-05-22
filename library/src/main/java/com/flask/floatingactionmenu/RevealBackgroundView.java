@@ -51,7 +51,9 @@ public class RevealBackgroundView extends FadingBackgroundView {
 			getLocationOnScreen(pos2);
 			pos[0] -= pos2[0] - fab.getWidth() / 2;
 			pos[1] -= pos2[1] - fab.getHeight() / 2;
-			maxRadius = (float) Math.sqrt(getWidth() * getWidth() + getHeight() * getHeight());
+			float dx = right - left;
+			float dy = bottom - top;
+			maxRadius = (float) Math.sqrt(dx * dx + dy * dy);
 		}
 	}
 
@@ -64,8 +66,14 @@ public class RevealBackgroundView extends FadingBackgroundView {
 
 	@Override
 	public void setAlpha(float alpha) {
-//		super.setAlpha(alpha);
 		this.alpha = alpha;
+		if (alpha == 0) {
+			setVisibility(GONE);
+			setClickable(false);
+		} else {
+			setVisibility(VISIBLE);
+			setClickable(true);
+		}
 		invalidate();
 	}
 }
