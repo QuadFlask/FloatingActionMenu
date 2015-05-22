@@ -1,18 +1,17 @@
 package com.flask.floatingactionmenu;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
 
 public class RevealBackgroundView extends FadingBackgroundView {
 	private Paint paint;
 	private float maxRadius = 0;
-	private int x, y;
+	private int[] pos = new int[2];
+	private int[] pos2 = new int[2];
+	private FloatingActionButton fab;
 
 	public RevealBackgroundView(Context context) {
 		super(context);
@@ -42,20 +41,32 @@ public class RevealBackgroundView extends FadingBackgroundView {
 	@Override
 	public void setFab(FloatingActionButton fab) {
 		super.setFab(fab);
-		x = (int) fab.getX();
-		y = (int) fab.getY();
+		this.fab = fab;
+	}
+
+	@Override
+	protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+		super.onLayout(changed, left, top, right, bottom);
+		if (fab != null) {
+			fab.getLocationOnScreen(pos);
+			getLocationOnScreen(pos2);
+			pos[0] -= pos2[0] - fab.getWidth() / 2;
+			pos[1] -= pos2[1] - fab.getHeight() / 2;
+			maxRadius = (float) Math.sqrt(getWidth() * getWidth() + getHeight() * getHeight());
+		}
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
-		maxRadius = (float) Math.sqrt(canvas.getWidth() * canvas.getWidth() + canvas.getHeight() * canvas.getHeight());
-		float radius = maxRadius * getAlpha();
-		canvas.drawCircle(x, y, radius, paint);
+		canvas.drawCircle(pos[0], pos[1], maxRadius * alpha, paint);
 	}
+
+	private float alpha = 0;
 
 	@Override
 	public void setAlpha(float alpha) {
-		super.setAlpha(alpha);
+//		super.setAlpha(alpha);
+		this.alpha = alpha;
 		invalidate();
 	}
 }
