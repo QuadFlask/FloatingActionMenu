@@ -46,7 +46,7 @@
 		fab:fab_toggle_icon="@drawable/ic_mode_edit_white_24dp"
 		/>
 
-	<com.flask.floatingactionmenu.FadingBackgroundView
+	<com.flask.floatingactionmenu.RevealBackgroundView
 		android:id="@+id/fading"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"/>
@@ -61,12 +61,13 @@
 		fab:fab_labelStyle="@style/fab_labels_style"
 		>
 
-		<com.flask.floatingactionmenu.FloatingActionButton
+		<com.flask.floatingactionmenu.FloatingActionToggleButton
 			android:id="@+id/faba"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_margin="8dp"
 			fab:fab_normal_icon="@drawable/ic_add_white_18dp"
+			fab:fab_toggle_icon="@drawable/ic_mode_edit_white_18dp"
 			fab:fab_type="mini"
 			fab:fab_labelText="faba"
 			/>

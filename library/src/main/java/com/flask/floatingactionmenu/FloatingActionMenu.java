@@ -1,21 +1,15 @@
 package com.flask.floatingactionmenu;
 
-import android.animation.Animator;
-import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Rect;
 import android.support.annotation.DimenRes;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.Property;
 import android.view.ContextThemeWrapper;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.TextView;
@@ -27,7 +21,7 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 	private FloatingActionToggleButton fabToggle;
 	private List<FloatingActionButton> fabList = new ArrayList<>();
 	private List<TextView> labelList = new ArrayList<>();
-	private View fadingBackgroundView;
+	private FadingBackgroundView fadingBackgroundView;
 
 	private AnimatorSet toggleOnAnimator, toggleOffAnimator;
 	private int labelsStyle;
@@ -156,6 +150,7 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 				fabToggle.toggleOff();
 			}
 		});
+		this.fadingBackgroundView.setFab(fabToggle);
 	}
 
 	@Override

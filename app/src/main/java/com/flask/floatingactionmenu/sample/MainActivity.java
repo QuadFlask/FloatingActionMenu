@@ -40,7 +40,6 @@ public class MainActivity extends ActionBarActivity {
 					if (fatb.isToggleOn()) toast(fab.getLabelText());
 				} else {
 					toast(fab.getLabelText());
-					floatingActionMenu.removeFloatingActionButton(fab);
 				}
 			}
 		});
