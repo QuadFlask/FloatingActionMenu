@@ -60,7 +60,10 @@ public class FloatingActionButton extends ImageButton {
 		if (attr != null) {
 			try {
 				colorNormal = attr.getColor(R.styleable.FloatingActionButton_fab_colorNormal, getColor(R.color.inbox_fab));
-				colorPressed = attr.getColor(R.styleable.FloatingActionButton_fab_colorPressed, getColor(R.color.inbox_fab_pressed));
+				if (attr.getBoolean(R.styleable.FloatingActionButton_fab_defaultPressedColor, false) || !attr.hasValue(R.styleable.FloatingActionButton_fab_colorPressed))
+					setBackgroundColorInner(colorNormal, true);
+				else
+					colorPressed = attr.getColor(R.styleable.FloatingActionButton_fab_colorPressed, getColor(R.color.inbox_fab_pressed));
 				colorDisabled = attr.getColor(R.styleable.FloatingActionButton_fab_colorDisabled, colorDisabled);
 				normalIcon = attr.getResourceId(R.styleable.FloatingActionButton_fab_normal_icon, 0);
 				type = attr.getInt(R.styleable.FloatingActionButton_fab_type, TYPE_NORMAL);
@@ -183,24 +186,28 @@ public class FloatingActionButton extends ImageButton {
 		updateBackground();
 	}
 
-	public void setBackgroundColor(@ColorRes int normalColor, @ColorRes int pressedColor) {
-		this.colorNormal = getColor(normalColor);
-		this.colorPressed = getColor(pressedColor);
+	public void setBackgroundColor(int normalColor, int pressedColor) {
+		this.colorNormal = normalColor;
+		this.colorPressed = pressedColor;
 		updateBackground();
 	}
 
-	public void setBackgroundColor(@ColorRes int normalColor, @Nullable Boolean calcPressedColorBrighter) {
-		this.colorNormal = getColor(normalColor);
+	private void setBackgroundColorInner(int normalColor, @Nullable Boolean calcPressedColorBrighter) {
+		this.colorNormal = normalColor;
 
 		if (calcPressedColorBrighter == null)
-			this.colorPressed = this.colorNormal;
+			this.colorPressed = normalColor;
 		else {
 			float[] hsv = new float[3];
-			Color.colorToHSV(this.colorNormal, hsv);
+			Color.colorToHSV(normalColor, hsv);
 			hsv[2] += calcPressedColorBrighter ? +0.15 : -0.15;
 
-			this.colorPressed = Color.HSVToColor(Color.alpha(this.colorNormal), hsv);
+			this.colorPressed = Color.HSVToColor(Color.alpha(normalColor), hsv);
 		}
+	}
+
+	public void setBackgroundColor(int normalColor, @Nullable Boolean calcPressedColorBrighter) {
+		setBackgroundColorInner(normalColor, calcPressedColorBrighter);
 		updateBackground();
 	}
 }

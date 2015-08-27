@@ -34,7 +34,7 @@ public class MainActivity extends ActionBarActivity {
 
 		floatingActionMenu.setIcon(2, R.drawable.ic_mode_edit_white_48dp);
 
-		floatingActionMenu.setBackgroundColor(2, R.color.accent_material_light, false);
+		floatingActionMenu.setBackgroundColor(2, getResources().getColor(R.color.accent_material_light), false);
 
 		floatingActionMenu.setOnFloatingActionMenuSelectedListener(new OnFloatingActionMenuSelectedListener() {
 			@Override

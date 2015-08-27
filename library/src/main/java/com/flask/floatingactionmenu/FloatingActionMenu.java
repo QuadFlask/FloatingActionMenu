@@ -238,11 +238,11 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 		fabList.get(index).setIconDrawable(resId);
 	}
 
-	public void setBackgroundColor(int index, @ColorRes int normalColor, @ColorRes int pressedColor) {
+	public void setBackgroundColor(int index, int normalColor, int pressedColor) {
 		fabList.get(index).setBackgroundColor(normalColor, pressedColor);
 	}
 
-	public void setBackgroundColor(int index, @ColorRes int normalColor, @Nullable Boolean calcPressedColorBrighter) {
+	public void setBackgroundColor(int index, int normalColor, @Nullable Boolean calcPressedColorBrighter) {
 		fabList.get(index).setBackgroundColor(normalColor, calcPressedColorBrighter);
 	}
 
