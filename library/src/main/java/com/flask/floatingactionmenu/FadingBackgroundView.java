@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class FadingBackgroundView extends View {
-	private int color = 0x80ffffff;
+	protected int color = 0xd0ffffff;
 
 	public FadingBackgroundView(Context context) {
 		super(context);
@@ -23,7 +23,7 @@ public class FadingBackgroundView extends View {
 		init(context, attrs);
 	}
 
-	private void init(Context context, AttributeSet attrs) {
+	protected void init(Context context, AttributeSet attrs) {
 		TypedArray attr = getTypedArray(context, attrs, R.styleable.FloatingActionButton);
 		if (attr != null) {
 			try {
@@ -56,6 +56,9 @@ public class FadingBackgroundView extends View {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		return getAlpha() != 0 & super.onTouchEvent(event);
+	}
+
+	public void setFab(FloatingActionButton fab) {
 	}
 
 	protected TypedArray getTypedArray(Context context, AttributeSet attributeSet, int[] attr) {
