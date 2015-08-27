@@ -12,6 +12,7 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -174,5 +175,32 @@ public class FloatingActionButton extends ImageButton {
 			setVisibility(VISIBLE);
 			setClickable(true);
 		}
+	}
+
+	public void setIconDrawable(@DrawableRes int resId) {
+		this.normalIcon = resId;
+		this.normalIconDrawable = null;
+		updateBackground();
+	}
+
+	public void setBackgroundColor(@ColorRes int normalColor, @ColorRes int pressedColor) {
+		this.colorNormal = getColor(normalColor);
+		this.colorPressed = getColor(pressedColor);
+		updateBackground();
+	}
+
+	public void setBackgroundColor(@ColorRes int normalColor, @Nullable Boolean calcPressedColorBrighter) {
+		this.colorNormal = getColor(normalColor);
+
+		if (calcPressedColorBrighter == null)
+			this.colorPressed = this.colorNormal;
+		else {
+			float[] hsv = new float[3];
+			Color.colorToHSV(this.colorNormal, hsv);
+			hsv[2] += calcPressedColorBrighter ? +0.15 : -0.15;
+
+			this.colorPressed = Color.HSVToColor(Color.alpha(this.colorNormal), hsv);
+		}
+		updateBackground();
 	}
 }

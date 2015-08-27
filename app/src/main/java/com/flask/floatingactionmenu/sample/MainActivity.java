@@ -1,7 +1,7 @@
 package com.flask.floatingactionmenu.sample;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Toast;
 
@@ -31,6 +31,10 @@ public class MainActivity extends ActionBarActivity {
 		floatingActionMenu.setLabelText(1, "fabb : Wow Wow 1");
 		floatingActionMenu.setLabelText(2, "fabc : Wow Wow Wow 2");
 		floatingActionMenu.setLabelText(3, "fab_toggle : Wow Wow Wow Wow 3");
+
+		floatingActionMenu.setIcon(2, R.drawable.ic_mode_edit_white_48dp);
+
+		floatingActionMenu.setBackgroundColor(2, R.color.accent_material_light, false);
 
 		floatingActionMenu.setOnFloatingActionMenuSelectedListener(new OnFloatingActionMenuSelectedListener() {
 			@Override

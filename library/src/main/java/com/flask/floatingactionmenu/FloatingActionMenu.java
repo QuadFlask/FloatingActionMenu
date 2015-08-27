@@ -4,7 +4,10 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Property;
 import android.view.ContextThemeWrapper;
@@ -229,6 +232,18 @@ public class FloatingActionMenu extends ViewGroup implements OnToggleListener {
 	public void setLabelText(int index, String text) {
 		labelList.get(index).setText(text);
 		fabList.get(index).setLabelText(text);
+	}
+
+	public void setIcon(int index, @DrawableRes int resId) {
+		fabList.get(index).setIconDrawable(resId);
+	}
+
+	public void setBackgroundColor(int index, @ColorRes int normalColor, @ColorRes int pressedColor) {
+		fabList.get(index).setBackgroundColor(normalColor, pressedColor);
+	}
+
+	public void setBackgroundColor(int index, @ColorRes int normalColor, @Nullable Boolean calcPressedColorBrighter) {
+		fabList.get(index).setBackgroundColor(normalColor, calcPressedColorBrighter);
 	}
 
 	private ObjectAnimator createObjectAnimator(Object target, Property property, long delay, float... values) {
